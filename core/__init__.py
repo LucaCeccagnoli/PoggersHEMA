@@ -1,0 +1,1 @@
+# il package core contiene le view per il caricamento delle pagine principali

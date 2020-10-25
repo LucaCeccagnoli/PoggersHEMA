@@ -1,0 +1,32 @@
+[
+    {
+        "model" : "users.CustomUser",
+        "pk": 1,
+        "fields": {
+            "username" : "user1",
+            "email": "user1@luca.it",
+            "password": "ultraviolent1"
+        }
+    },
+
+    {
+        "model" : "users.CustomUser",
+        "pk": 2,
+        "fields": {
+            "username" : "user2",
+            "email": "user2@luca.it",
+            "password": "ultraviolent2"
+        }
+    },
+
+    {
+        "model" : "users.CustomUser",
+        "pk": 3,
+        "fields": {
+            "username" : "user3",
+            "email": "user3@luca.it",
+            "password": "ultraviolent3"
+        }
+    }
+
+]
