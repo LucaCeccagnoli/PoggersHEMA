@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    {% load crispy_forms_tags %}
+
+</head>
+<body>
+    <h1>test</h1>
+    <form id = "reg_form" method = "post">
+        {% csrf_token %}    
+        {{ form|crispy }}
+        <input type="submit" value="invia">
+    </form>
+    <button class = "btn btn-primary" onclick="post()"> Prova </button>
+</body>
+<script>
+    function post(){   
+        data = JSON.stringify($("#reg_form").serializeArray());
+        data = JSON.parse(data);
+        console.log(data);
+        var string_data = JSON.stringify(data);
+
+        var xhr = new XMLHttpRequest();
+        var url = "http://127.0.0.1:8000/api/provajson/";
+        
+        xhr.open("POST", url, true);  //richiesta post asincrona
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function(){
+            if(xhr.readyState == 4 && xhr.status == 200){ //se la richiesta è valida
+                xhr.send(string_data);
+                console.log(url);
+            }
+            else{
+                console.log("request error:");
+            }
+        }
+    }
+</script>
+</html>

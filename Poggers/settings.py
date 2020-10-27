@@ -42,13 +42,9 @@ INSTALLED_APPS = [
 
     'allauth',
     'allauth.account',
-    'allauth.socialaccount',
     
     'rest_framework',
     'rest_framework.authtoken',
-
-    'rest_auth',
-    'rest_auth.registration',
 
     'crispy_forms',
 
@@ -150,6 +146,9 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 # app sites
 SITE_ID = 1
 
+# email backend
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 # app allauth: registrazione e login tramite rest endpoint
 # disabilita verifica email
 ACCOUNT_EMAIL_VERIFICATION = "none"
@@ -157,9 +156,8 @@ ACCOUNT_EMAIL_REQUIRED = (True)
 
 #dizionario impostazioni rest
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
+    'DEFAULT_AUTHENTICATION_CLASSES': (     # classi di default per l'autenticazione
         'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
     )
 }
 
