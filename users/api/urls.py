@@ -8,9 +8,8 @@ urlpatterns = [
     path("user-list/", UserListAPIView.as_view(), name = "user-list"),  # lista utenti
     path("orders/", OrderListAPIView.as_view(), name = "order-list"),   # lista completa ordini
 
-    path("registration/", RegistrationAPIView.as_view(), name = "registration"),   #pagina registrazione
-    path("login/", login_view, name = "login"),          #pagina login
+    path("obtain-token/", obtain_auth_token, name = "obtain-token"),    # ottieni token utente
+    path("register-user/", registration_view, name = "register-user"),  # registrazione nuovo utente
 
-    path("auth/login", obtain_auth_token, name = "obtain-token"),
-    path("provajson/", registration_view, name = "prova-json"),
+    path("get-logged-user/", get_logged_user_view, name = "get-logged-user"),
 ]

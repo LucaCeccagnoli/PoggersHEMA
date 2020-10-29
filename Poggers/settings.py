@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+import mimetypes
+
+mimetypes.add_type("text/html", ".css", True)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -45,6 +48,7 @@ INSTALLED_APPS = [
     
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_auth',
 
     'crispy_forms',
 
@@ -133,7 +137,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # login
-LOGIN_URL = ""
+LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = "/"    #homepage
 LOGOUT_REDIRECT_URL = "/"   #homepage
 
@@ -156,9 +160,10 @@ ACCOUNT_EMAIL_REQUIRED = (True)
 
 #dizionario impostazioni rest
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (     # classi di default per l'autenticazione
+    'DEFAULT_AUTHENTICATION_CLASSES': [     # classi di default per l'autenticazione
         'rest_framework.authentication.TokenAuthentication',
-    )
+        'rest_framework.authentication.BasicAuthentication',
+    ]
 }
 
 

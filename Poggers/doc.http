@@ -1,11 +1,8 @@
 
 ### Registration
-POST http://127.0.0.1:8000/api/provajson/ HTTP/1.1
+GET http://127.0.0.1:8000/api/get-logged-user/ HTTP/1.1
 content-type: application/json
 
 {
-    "username": "user1",
-    "email": "user1@luca.it",
-    "password1" : "ultraviolent1",
-    "password2" : "ultraviolent1"
+
 }

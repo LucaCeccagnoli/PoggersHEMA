@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+{% extends 'auth_layout.html' %}
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,35 +14,86 @@
 
 </head>
 <body>
-    <h1>test</h1>
-    <form id = "reg_form" method = "post">
-        {% csrf_token %}    
-        {{ form|crispy }}
-        <input type="submit" value="invia">
-    </form>
-    <button class = "btn btn-primary" onclick="post()"> Prova </button>
+    {% block content %}
+    <div class = "container">
+        <h1>Registration</h1>
+        <form id = "reg_form" method = "post">
+            {% csrf_token %}    
+            {{ form|crispy }}
+            <input type="submit" class = "btn btn-primary" value="Register">
+        </form>
+        <div class = "mt-2">Already have an account?
+            <a href="http://127.0.0.1:8000/login/">Login</a>
+        </div>
+        <br>
+        <p id = "errors" class = "text-danger"></p>
+    </div>
+    {% endblock content %}
 </body>
 <script>
-    function post(){   
-        data = JSON.stringify($("#reg_form").serializeArray());
-        data = JSON.parse(data);
-        console.log(data);
-        var string_data = JSON.stringify(data);
+    var messages = []
+
+    document.getElementById("reg_form").addEventListener('submit', (e) =>{
+        e.preventDefault()   //impedisce l'invio del form
 
         var xhr = new XMLHttpRequest();
-        var url = "http://127.0.0.1:8000/api/provajson/";
-        
-        xhr.open("POST", url, true);  //richiesta post asincrona
-        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.open("POST", "http://127.0.0.1:8000/api/register-user/", true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        var username = document.getElementById("id_username").value;
+        var email = document.getElementById("id_email").value;
+        var password = document.getElementById("id_password1").value;
+        var password2 = document.getElementById("id_password2").value;
+
+        // username and email are automatically evaluated by the browser
+        // validate password
+        if(password !== password2){
+            append_message("passwords do not match.")
+        }
+
+        //se ci sono errori nel client
+        if(messages.length > 0){
+            print_messages();
+            return;
+        }
+
+        //risposta dal server
         xhr.onreadystatechange = function(){
-            if(xhr.readyState == 4 && xhr.status == 200){ //se la richiesta è valida
-                xhr.send(string_data);
-                console.log(url);
-            }
-            else{
-                console.log("request error:");
+            if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
+                response = xhr.responseText;
+                response = JSON.parse(response)
+                var message = '';
+                for(var i in response){
+                    append_message(response[i]);
+                }
+
+                //se ci sono errori del server
+                print_messages()
             }
         }
+
+        data = JSON.stringify({
+            "username": username,
+            "email": email,
+            "password": password,
+            "password2": password2
+        });
+
+        console.log(data);
+        xhr.send(data);
+    });
+
+    // aggiungi un errore alla lista, il prossimo sarà scritto a capo
+    function append_message(msg){
+        messages.push(msg)
+        messages.join('\n');
     }
+
+    //stampa messaggi di errore e svuota l'array degli errori
+    function print_messages(){
+        document.getElementById("errors").innerHTML = messages;
+        console.log(messages)
+        messages = [];
+    }
+    
 </script>
 </html>
