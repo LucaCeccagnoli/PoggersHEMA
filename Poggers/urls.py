@@ -46,6 +46,7 @@ urlpatterns = [
     #login da browsable-api
     path('api-auth/', include("rest_framework.urls")), 
 
+    path('', IndexTemplateView.as_view(), name = "entry-point")
     #homepage
-    re_path(r"^.*$", IndexTemplateView.as_view(), name = "entry-point"),
+    #re_path(r"^.*$", IndexTemplateView.as_view(), name = "entry-point"),
 ]

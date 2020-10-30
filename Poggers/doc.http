@@ -1,8 +1,9 @@
 
 ### Registration
-GET http://127.0.0.1:8000/api/get-logged-user/ HTTP/1.1
+POST http://127.0.0.1:8000/api/rest-auth/login/ HTTP/1.1
 content-type: application/json
 
 {
-
+    "username": "user1",
+    "password": "ultraviolent1"
 }

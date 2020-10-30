@@ -7,8 +7,8 @@ class ArticleListSerializer(serializers.ModelSerializer):
         model = Article
         fields = [  "pk",
                     "name",
+                    "description",
                     "material",
-                    "weight",
                     "price",
                     "stock",
                 ]  

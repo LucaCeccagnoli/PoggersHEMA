@@ -16,11 +16,14 @@ class ArticleListAPIView(generics.GenericAPIView, mixins.ListModelMixin, mixins.
         queryset =  Article.objects.all()
 
         #ottieni parametri dall'url
-        material = self.request.query_params.get("material", None)
-        print(material)
+        category = self.request.query_params.get("category", None)
+        sub_category = self.request.query_params.get("sub_category", None)
         
-        if material is not None:
-            queryset = queryset.filter(material__exact=material)
+        # filtra per categoria e materiale
+        if category is not None:
+            queryset = queryset.filter(category__exact=category)
+        if sub_category is not None:
+            queryset = queryset.filter(sub_category__exact=sub_category)
 
         return queryset
 

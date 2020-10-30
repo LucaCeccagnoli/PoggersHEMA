@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="it">
   <head>
@@ -8,6 +10,8 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="{% static 'js/functions.js' %}"></script>
 
     <style media="screen">
       #logo{
@@ -39,7 +43,7 @@
         <div class = "user-tab" style = "float: right;"> 
             <div id = "logged_user"></div>
             <button id = "login-button" class="btn btn-alert" href="http://127.0.0.1:8000/login/" hidden> Login</a>
-            <button id = "logout-button" class="btn btn-alert" onClick="logout()" hidden>Logout</button>"
+            <button id = "logout-button" class="btn btn-alert" onclick="logout()" hidden>Logout</button>"
         </div>
     </nav>
 
@@ -102,6 +106,11 @@
     {% block content %}
 
     {% endblock %}
+    <button class = "btn btn-primary" onclick="get_articles('?category=simulator&sub_category=sword1h', document.getElementById('item-list'))"> get articles </button>
+    <ul id = "item-list">
+
+    </ul>
+
   </body>
   <script>
       var login_btn = document.getElementById("login-button");
@@ -142,7 +151,7 @@
 
       function logout(){
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "http://127.0.0.1:8000/api/rest-auth/logout");
+        xhr.open("POST", "http://127.0.0.1:8000/api/rest-auth/logout/");
         xhr.onreadystatechange = function(){
             if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
                 window.location.replace("http://127.0.0.1:8000/");
@@ -150,6 +159,5 @@
         }
         xhr.send();
       }
-
   </script>
 </html>
