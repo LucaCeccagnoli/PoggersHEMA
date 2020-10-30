@@ -35,3 +35,21 @@ function get_articles(params, element){
     }
     xhr.send();
 }
+
+// richiesta http all'api che controlla l'utente loggato
+// ritorna l'username dell'utente loggato, o una stringa vuota se il login non è stato effettuato
+function get_logged_username(url, callback){
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send();
+
+    xhr.onreadystatechange = function(){
+        if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
+            var response = xhr.responseText;
+            response = JSON.parse(response);
+
+            callback(response['user']);
+        }
+    }
+}

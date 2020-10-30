@@ -36,16 +36,7 @@ class UserListAPIView(generics.ListAPIView):
     serializer_class = UserListSerializer
     permission_classes = [permissions.IsAdminUser]
 
-# lista di tutti gli ordini effettuati da tutti gli utenti
-# solo admin
-class OrderListAPIView(generics.ListAPIView):
-    queryset = Order.objects.all()
-    permission_classes = [permissions.IsAdminUser]
-    serializer_class = OrderListSerializer
 
-
-
-# da usare quando sarà possibile inviare json dal client
 @api_view(['POST',])
 def registration_view(request):
     #print(request.data)

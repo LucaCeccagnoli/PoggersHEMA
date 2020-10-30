@@ -16,7 +16,7 @@
     {% block content %}
     <div class = "container">
         <h1>Login</h1>
-        <form id = "log_form" action="http://127.0.0.1:8000/api/rest-auth/login/" method = "post">
+        <form id = "log_form" action="" method = "post">
             {% csrf_token %}    
             {{ form|crispy }}
             <input type="submit" class = "btn btn-primary" value="Login">
@@ -35,7 +35,6 @@
     var messages = []
 
     document.getElementById("log_form").on('submit', (e) =>{ 
-        console.log("ciao");
         e.preventDefault();
         var username = document.getElementById("id_username").value;
         var password = document.getElementById("id_password").value;
@@ -43,17 +42,13 @@
         console.log(username)
         console.log(password)
 
-        // var tokenRequest = new XMLHttpRequest();
-        // tokenRequest.open("POST", "http://127.0.0.1:8000/api/rest-auth/login/")
-        // tokenRequest.setRequestHeader('Content-Type', 'application/json');
-
+        var tokenRequest = new XMLHttpRequest();
+        tokenRequest.open("POST", "http://127.0.0.1:8000/api/rest-auth/login/")
+        tokenRequest.setRequestHeader('Content-Type', 'application/json');
 
         tokenRequest.onreadystatechange = function(){
             if(tokenRequest.readyState == XMLHttpRequest.DONE && tokenRequest.status == 200){
-                // tokenRequest.send(JSON.stringify({
-                //     "username": username,
-                //     "password": password,
-                // }));
+                window.location.replace("http://127.0.0.1:8000/");
             }
             else{
                 document.getElementById("errors").innerHTML = "Incorrect username or password";
@@ -61,8 +56,10 @@
             }
         }
 
-
-
+        tokenRequest.send(JSON.stringify({
+            "username": username,
+            "password": password,
+        }));
     });
     
                     //redirige alla pagina iniziale

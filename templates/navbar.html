@@ -11,7 +11,13 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+    <!-- funzioni importate -->
     <script src="{% static 'js/functions.js' %}"></script>
+
+    <!-- script eseguida prima di importare i template -->
+    <script>
+
+    </script>
 
     <style media="screen">
       #logo{
@@ -27,7 +33,8 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div style="padding: 3px;">
-      <a class="navbar-brand" href="#"><!--img src="https://lh3.googleusercontent.com/proxy/QVvhsNHMx-y_GqwSKhtlEGr0VlW205AkI424eybuALWMzgbIvKgtYmPCjsm169VwvlT5y3qvYdlwc5Vy7XbHkXpTa4OHGP1h_UXSga57BinJNLolzjEm3-SDTjoFaVAnXEEk1GPqpuJjoFNNFFBMgiH_" href="" width="30" height="30" alt=""-->
+      <a class="navbar-brand" href="http://127.0.0.1:8000/">
+		  <!--img src="https://lh3.googleusercontent.com/proxy/QVvhsNHMx-y_GqwSKhtlEGr0VlW205AkI424eybuALWMzgbIvKgtYmPCjsm169VwvlT5y3qvYdlwc5Vy7XbHkXpTa4OHGP1h_UXSga57BinJNLolzjEm3-SDTjoFaVAnXEEk1GPqpuJjoFNNFFBMgiH_" href="" width="30" height="30" alt=""-->
           Shitass
       </a>
     </div>
@@ -42,8 +49,9 @@
       </form>
         <div class = "user-tab" style = "float: right;"> 
             <div id = "logged_user"></div>
-            <button id = "login-button" class="btn btn-alert" href="http://127.0.0.1:8000/login/" hidden> Login</a>
-            <button id = "logout-button" class="btn btn-alert" onclick="logout()" hidden>Logout</button>"
+            <button id = "login-button" class="btn btn-primary" onclick="location.href='http://127.0.0.1:8000/login/' " hidden> Login</a>
+            <button id = "logout-button" class="btn btn-danger" onclick="logout()" hidden>Logout</button>
+            <button id = "cart-button" class="btn btn-success" onclick="location.href='http://127.0.0.1:8000/shopping-cart/' " hidden>Shopping Cart</button>
         </div>
     </nav>
 
@@ -113,51 +121,57 @@
 
   </body>
   <script>
-      var login_btn = document.getElementById("login-button");
-      var logout_btn = document.getElementById("logout-button");
+		var current_user = '';
+		var login_btn = document.getElementById("login-button");
+      	var logout_btn = document.getElementById("logout-button");
+		var cart_btn = document.getElementById("cart-button");
 
-      $(document).ready(function(){
-        login_btn.hidden = true;
-        logout_btn.hidden = true;
-        //prendi l'utente corrente
+		//nascondi pulsanti
+		login_btn.hidden = true;
+		logout_btn.hidden = true;
+		cart_btn.hidden = true;
 
-        console.log("document ready");
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "http://127.0.0.1:8000/api/get-logged-user/");
-        //xhr.setRequestHeader('Content-Type', 'application/json');
+	  	get_logged_username('http://127.0.0.1:8000/api/get-logged-user/', function(result){
+			//codice che richiede il nome utente
+			current_user = result;
 
-        xhr.onreadystatechange = function(){
-            if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
-                response = xhr.responseText
-                console.log(response)
-                console.log(typeof response)
-                response = JSON.parse(response);
+			//se c'è un utente loggato mostra pulsanti logout e carrello, altrimenti pulsante di login
+			if(current_user !== ''){
+				$user = current_user;
+				logout_btn.hidden = false;
+				cart_btn.hidden = false;
+				$(".user-tab").append(
+					"<div class=\"navbar-brand\">Logged as : "+ $user + "</div>",
+				);
+			}
+			else{
+				login_btn.hidden = false;
+			}
+	  	});
 
-                if(response["user"] !== ''){
-                    $user = response["user"]
-                    logout_btn.hidden = false;
-                    $(".user-tab").append(
-                        "<div class=\"navbar-brand\">Logged as : "+ $user + "</div>",
-                    )
-                }
-                else{
-                    login_btn.hidden = false;
-                }
-            }
-        }
-        xhr.send();
+		//pulsante di logout
+		function logout(){
+			var xhr = new XMLHttpRequest();
+			xhr.open("POST", "http://127.0.0.1:8000/api/rest-auth/logout/");
+			xhr.onreadystatechange = function(){
+				if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
+					window.location.replace("http://127.0.0.1:8000/");
+				}
+			}
+			xhr.send();
+		}
 
-      });
+		//pulsante di login
+		function open_cart(){
+			var xhr = new XMLHttpRequest();
+			xhr.open("GET", "http://127.0.0.1:8000/");
+			xhr.onreadystatechange = function(){
+			if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
+					//window.location.replace("http://127.0.0.1:8000/shopping-cart/");
+				}
+			}
+			xhr.send();
+		}
 
-      function logout(){
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "http://127.0.0.1:8000/api/rest-auth/logout/");
-        xhr.onreadystatechange = function(){
-            if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
-                window.location.replace("http://127.0.0.1:8000/");
-            }
-        }
-        xhr.send();
-      }
   </script>
 </html>

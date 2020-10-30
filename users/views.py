@@ -26,4 +26,13 @@ class LoginView(View):
         return render(request, "login.html", context)
     
     def post(self, request):
-        return HttpResponseRedirect("/login")
+        return HttpResponseRedirect("/login/")
+
+# se l'utente è loggato mostra il suo carrello
+class ShoppingCartView(View):
+    def get(self, request):
+        current_user = request.user
+        if current_user.is_authenticated:
+            return render(request, "shopping_cart.html")
+        else:
+            return HttpResponseRedirect("/login/")

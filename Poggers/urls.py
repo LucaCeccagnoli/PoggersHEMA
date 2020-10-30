@@ -31,12 +31,14 @@ urlpatterns = [
     # pagina amministrazione
     path('admin/', admin.site.urls),
 
-    # url login e registrazione
-    path("registration/", RegistrationView.as_view()),
-    path("login/", LoginView.as_view()),
+    # url pagine html
+    path('', IndexTemplateView.as_view(), name = "entry-point"), # homepage / lista articoli
+    path("registration/", RegistrationView.as_view()),          # registrazione
+    path("login/", LoginView.as_view()),                        # login
+    path("shopping-cart/", ShoppingCartView.as_view()),         # ordini
 
     # api
-    path('api/', include("users.api.urls")), 
+    path('api/', include("users.api.urls")),                    
     path('api/', include("articles.api.urls")),
 
     # rest auth fornisce url per automatizzare l'autenticazione
@@ -46,7 +48,6 @@ urlpatterns = [
     #login da browsable-api
     path('api-auth/', include("rest_framework.urls")), 
 
-    path('', IndexTemplateView.as_view(), name = "entry-point")
     #homepage
     #re_path(r"^.*$", IndexTemplateView.as_view(), name = "entry-point"),
 ]

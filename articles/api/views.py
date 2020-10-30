@@ -44,6 +44,14 @@ class ArticleDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAdminUserOrReadonly]
 
 
+# lista di tutti gli ordini effettuati da tutti gli utenti
+# solo admin
+class OrderListAPIView(generics.ListAPIView):
+    queryset = Order.objects.all()
+    permission_classes = [permissions.IsAdminUser]
+    serializer_class = OrderListSerializer
+
+
 # class ArticleDetailAPIView(APIView):
 #     def get_object(self, pk):
 #         article = get_object_or_404(Article, pk = pk)

@@ -1,0 +1,14 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+    <h2 id = "title"></h2>
+
+    <script>
+        //c'è modo di ottenere l'utente corrente dal template precedente?
+        var current_user = '';
+	    get_logged_username('http://127.0.0.1:8000/api/get-logged-user/', function(result){
+            document.getElementById("title").innerHTML = result;
+        });
+
+    </script>
+{% endblock content %}
