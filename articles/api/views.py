@@ -19,23 +19,23 @@ class ArticleListAPIView(generics.GenericAPIView, mixins.ListModelMixin, mixins.
     serializer_class = ArticleListSerializer
     permission_classes = [IsAdminUserOrReadonly]
 
-    def get_queryset(self):
-        queryset =  Article.objects.all()
-
-        #ottieni parametri dall'url
-        category = self.request.query_params.get("category", None)
-        sub_category = self.request.query_params.get("sub_category", None)
-        
-        # filtra per categoria e materiale
-        if category is not None:
-            queryset = queryset.filter(category__exact=category)
-        if sub_category is not None:
-            queryset = queryset.filter(sub_category__exact=sub_category)
-
-        return queryset
-
     # eseguito in seguito a richiesta GET
     def get(self, request, *args, **kwargs):
+        #ottieni categorie dall'url
+        category = None
+        sub_category = None
+        if 'category' in kwargs : category = str(kwargs['category'])
+        if 'sub_category' in kwargs : sub_category = str(kwargs['sub_category'])
+
+        print(category, type(category))
+
+        self.queryset = Article.objects.all()
+        if category is not None:
+            self.queryset = self.queryset.filter(category__exact = category)
+            print(self.queryset)
+        if sub_category is not None:
+            self.queryset = self.queryset.filter(sub_category__exact = sub_category)
+
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
