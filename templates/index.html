@@ -14,6 +14,11 @@
 	    border: solid #f7f7f9;
 	  }
 	</style>
+		<form action="http://127.0.0.1:8000/" method = "get">
+			<input type="hidden" name="category" value = "protections">
+			<input type="hidden" name="sub_category" value = "head">
+			<input type="submit" value="reload">
+		</form>
   <!-- cards articoli -->
     <div  class=" container
                   container-border"> 
@@ -24,7 +29,7 @@
             id="container-carte">
           <!-- CARTE SINGOLE -->
           
-  		</div>
+	  </div>
   	</div>
       <!-- Optional JavaScript -->
       <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -33,8 +38,23 @@
 	  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
 	<script>
-		url = "http://127.0.0.1:8000/api/articles/";
-		getArticles(url);
+		articles_url = "http://127.0.0.1:8000/api/articles/"
+
+		//ottieni i parametri per le categorie dall'url della pagina
+		var query_string = window.location.search;
+		const  url_params = new URLSearchParams(query_string);
+		var category =  url_params.get("category");
+		var sub_category = url_params.get("sub_category");
+
+		//se i parametri sono stati inseriti, aggiungili al percorso per ottenere gli articoli
+		if(category){
+			articles_url += category;
+		}
+		if(sub_category){
+			articles_url = articles_url + "/" + sub_category
+		}
+
+		getArticles(articles_url);
 
 		function AddToCart(key){
 			token = get_cookie("token");
