@@ -11,6 +11,8 @@ class ArticleListSerializer(serializers.ModelSerializer):
                     "material",
                     "price",
                     "stock",
+                    "category",
+                    "sub_category",
                 ]  
 
 # dati aggiuntivi mostrati sul dettaglio di un articolo
