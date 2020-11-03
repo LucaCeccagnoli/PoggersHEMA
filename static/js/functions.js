@@ -8,32 +8,29 @@ function get_jQuery(){
 // ottiene articoli con chiamata rest
 // params specifica parametri da appendere all'url della richiesta, per filtrare gli articoli
 // element specifica l'elemento dopo cui stampare i risultati
-function get_articles(params, element){
-    var xhr = new XMLHttpRequest();
-
-    xhr.open("GET", "http://127.0.0.1:8000/api/articles/" + params);
+function getArticles(url){
+    xhr = new XMLHttpRequest();
+    xhr.open("GET", url);
+    xhr.send();
     xhr.onreadystatechange = function(){
         if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
-            response = xhr.responseText;
-            response = JSON.parse(response)
-            console.log(response)
-
-            //sostituire con il codice per disegnare le carte
-            for(var article in response){
-                var li = document.createElement('li');
-
-                //elementi del json
-                for(var key in response[article]){
-                    console.log(response[article]);
-                    var textNode = document.createTextNode(response[article][key]);
-                    
-                    li.appendChild(textNode);
-                }
-                element.appendChild(li)
-            }
+            response = JSON.parse(xhr.responseText);
+            console.log(response);
+            $.each(response, function(i){addCard(response[i])});
         }
     }
-    xhr.send();
+}
+
+function addCard(item){
+    var src = "https://images-na.ssl-images-amazon.com/images/I/61dO6Tn1bKL._AC_SL1500_.jpg";
+    var textNome = item["name"];
+    var textDesc = item["description"];
+    var textPrezzo = item["price"];
+    var textStock = item["stock"];
+
+
+    var myCard = $(`<div class=" card card-size"> <img class="card-img-top" src=${src}> <div class="card-body"> <h5 class="card-title">${textNome}</h5> <p class="card-text">${textDesc}</p>Prezzo: ${textPrezzo}<a href="#" class="btn btn-primary" style="float: right;"> Carrello </a> </div><div class="card-footer"> <small class="text-muted">In Stock: ${textStock}</small> </div></div>`);
+    myCard.appendTo('#container-carte');
 }
 
 //richiesta http per ottenere dati di un singolo articolo data la chiave primaria
@@ -97,3 +94,6 @@ function get_cookie(key){
     }
     return cookie;
 }
+
+
+

@@ -11,11 +11,10 @@
 	  }
 
 	  .container-border{
-	    border: solid #f7f7f9;
+	    /*border: solid #f7f7f9;*/
 	  }
 	</style>
   <!-- cards articoli -->
-  <button onclick="addCard()" value="test xD"> test </button>
     <div  class=" container
                   container-border"> 
       <!-- DECK CARTE -->
@@ -34,15 +33,8 @@
 	  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
 	<script>
-		xhr = new XMLHttpRequest();
-		xhr.open("POST", 'http://127.0.0.1:8000/api/articles/');
-		xhr.send();
-		xhr.onreadystatechange = function(){
-			if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
-				response = JSON.parse(xhr.responseText);
-				console.log(response);
-			}
-		}
+		url = "http://127.0.0.1:8000/api/articles/";
+		getArticles(url);
 
 		function AddToCart(key){
 			token = get_cookie("token");
@@ -85,16 +77,5 @@
 			// utente non loggato
 		}
 
-  	function addCard(){
-        var src = "https://images-na.ssl-images-amazon.com/images/I/61dO6Tn1bKL._AC_SL1500_.jpg";
-        var textNome = "crenge";
-        var textDesc = "very poggers description";
-        var textPrezzo = "$69.99";
-        var textStock = "a billion bajillion";
-
-
-        var myCard = $(`<div class=" card card-size"> <img class="card-img-top" src=${src}> <div class="card-body"> <h5 class="card-title">${textNome}</h5> <p class="card-text">${textDesc}</p>Prezzo: ${textPrezzo}<a href="#" class="btn btn-primary" style="float: right;"> Carrello </a> </div><div class="card-footer"> <small class="text-muted">In Stock: ${textStock}</small> </div></div>`);
-        myCard.appendTo('#container-carte');
-      }
 	</script>
 {% endblock %}
