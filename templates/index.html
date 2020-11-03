@@ -2,55 +2,48 @@
 {% extends 'navbar.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title> Poggers </title>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-	<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-</head>
-<body>
-    {% block content %}
+{% block content %}
+	<style media="screen">
+	  .card-size{
+	    width: 18rem;
+	    float: left;
+	  }
 
+	  .container-border{
+	    border: solid #f7f7f9;
+	  }
+	</style>
   <!-- cards articoli -->
-  <div style="padding: 20px;">
-      <div class="card" style="width: 18rem; float:left;">
-        <img class="card-img-top" 
-          src="https://vignette.wikia.nocookie.net/minecraft-earth/images/f/f0/Diamond_sword.png" 
-          alt="Card image cap"
-          >
-        <div class="card-body" style = "height: 200px;">
-         	 <h5 class="card-title">Mnicwaft diamante hack 10%% vera</h5>
-          	<p class="card-text">subcribble to my channel pls</p>
-		  	<div class="btn btn-primary" onclick="AddToCart(5)">Add to cart</div>prezzo
-        </div>
-      </div>
-      <div style="padding: 5px; float: left;"></div>
-      <div class="card" style="width: 18rem; float:left;" >
-        <img class="card-img-top" 
-          src="https://images-na.ssl-images-amazon.com/images/I/61dO6Tn1bKL._AC_SL1500_.jpg" 
-          >
-        <div class="card-body" style = "height: 200px;">
-          <h5 class="card-title">An actual falchion</h5>
-          <p class="card-text">fuck u fire emblem</p>
-          <adiv class="btn btn-primary" onclick="AddToCart(10)">Add to Cart</div> farma nell'arena
-        </div>
-      </div>
-	  </div>
-	  
+  <button onclick="addCard()" value="test xD"> test </button>
+    <div  class=" container
+                  container-border"> 
+      <!-- DECK CARTE -->
+      <div class="row 
+                  mt-5
+                  justify-content-center"
+            id="container-carte">
+          <!-- CARTE SINGOLE -->
+          
+  		</div>
+  	</div>
       <!-- Optional JavaScript -->
       <!-- jQuery first, then Popper.js, then Bootstrap JS -->
       <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 	  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
-      
-</body>
 	<script>
+		xhr = new XMLHttpRequest();
+		xhr.open("POST", 'http://127.0.0.1:8000/api/articles/');
+		xhr.send();
+		xhr.onreadystatechange = function(){
+			if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
+				response = JSON.parse(xhr.responseText);
+				console.log(response);
+			}
+		}
+
 		function AddToCart(key){
 			token = get_cookie("token");
 			if(token != ''){
@@ -91,6 +84,17 @@
 			}
 			// utente non loggato
 		}
+
+  	function addCard(){
+        var src = "https://images-na.ssl-images-amazon.com/images/I/61dO6Tn1bKL._AC_SL1500_.jpg";
+        var textNome = "crenge";
+        var textDesc = "very poggers description";
+        var textPrezzo = "$69.99";
+        var textStock = "a billion bajillion";
+
+
+        var myCard = $(`<div class=" card card-size"> <img class="card-img-top" src=${src}> <div class="card-body"> <h5 class="card-title">${textNome}</h5> <p class="card-text">${textDesc}</p>Prezzo: ${textPrezzo}<a href="#" class="btn btn-primary" style="float: right;"> Carrello </a> </div><div class="card-footer"> <small class="text-muted">In Stock: ${textStock}</small> </div></div>`);
+        myCard.appendTo('#container-carte');
+      }
 	</script>
-	{% endblock %}
-</html>
+{% endblock %}
