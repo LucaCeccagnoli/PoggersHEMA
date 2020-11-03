@@ -9,11 +9,11 @@
     <title>Document</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     {% load crispy_forms_tags %}
 </head>
 <body>
     {% block content %}
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <div class = "container">
         <h1>Login</h1>
         <form id = "log_form" action="" method = "post">
@@ -28,13 +28,12 @@
         <br>
         <p id = "errors" class = "text-danger"></p>
     </div>
-    {% endblock content %}
 </body>
 
 <script>
     var messages = []
 
-    document.getElementById("log_form").on('submit', (e) =>{ 
+    $("#log_form").on('submit', (e) =>{ 
         e.preventDefault();
         var username = document.getElementById("id_username").value;
         var password = document.getElementById("id_password").value;
@@ -48,9 +47,13 @@
 
         tokenRequest.onreadystatechange = function(){
             if(tokenRequest.readyState == XMLHttpRequest.DONE && tokenRequest.status == 200){
-                window.location.replace("http://127.0.0.1:8000/");
+                //il login ha avuto successo
+                response = JSON.parse(tokenRequest.responseText);
+                //setta token nei cookie, valido per 1 ora
+                set_cookie("token", response['key'], 60);
+                window.location.href = "http://127.0.0.1:8000/";
             }
-            else{
+            else if(tokenRequest.readyState == XMLHttpRequest.DONE && tokenRequest.status == 400){
                 document.getElementById("errors").innerHTML = "Incorrect username or password";
                 document.getElementById("id_password").value = "";  //svuota password
             }
@@ -66,5 +69,7 @@
     //window.location.replace("http://127.0.0.1:8000/");
 
 </script>
+
+{% endblock content %}
 
 </html>

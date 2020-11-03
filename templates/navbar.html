@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    <!-- funzioni importate -->
-    <script src="{% static 'js/functions.js' %}"></script>
+    <!-- funzioni importate  {% static 'js/functions.js' %}" -->
+    <script src="http://127.0.0.1:8000/static/js/functions.js"></script>
 
     <!-- script eseguida prima di importare i template -->
     <script>
@@ -111,10 +111,12 @@
         </ul>
       </div>
     </nav>
+
+    <p>{{ registration }}</p>
+
     {% block content %}
 
     {% endblock %}
-    <button class = "btn btn-primary" onclick="get_articles('?category=simulator&sub_category=sword1h', document.getElementById('item-list'))"> get articles </button>
     <ul id = "item-list">
 
     </ul>
@@ -131,23 +133,26 @@
 		logout_btn.hidden = true;
 		cart_btn.hidden = true;
 
-	  	get_logged_username('http://127.0.0.1:8000/api/get-logged-user/', function(result){
-			//codice che richiede il nome utente
-			current_user = result;
+        //ottiene l'utente loggato per decidere quali elementi mostrare
+        get_logged_user(function(result){
+            //codice che richiede il nome utente
+            current_user = result['user'];
+            token = result['token'];
 
-			//se c'è un utente loggato mostra pulsanti logout e carrello, altrimenti pulsante di login
-			if(current_user !== ''){
-				$user = current_user;
-				logout_btn.hidden = false;
-				cart_btn.hidden = false;
-				$(".user-tab").append(
-					"<div class=\"navbar-brand\">Logged as : "+ $user + "</div>",
-				);
-			}
-			else{
-				login_btn.hidden = false;
-			}
-	  	});
+            //se c'è un utente loggato mostra pulsanti logout e carrello, altrimenti pulsante di login
+            if(current_user !== ''){
+
+                $user = current_user;
+                logout_btn.hidden = false;
+                cart_btn.hidden = false;
+                $(".user-tab").append(
+                    "<div class=\"navbar-brand\">Logged as : "+ $user + "</div>",
+                );
+            }
+            else{
+            login_btn.hidden = false;
+            }
+        });
 
 		//pulsante di logout
 		function logout(){
@@ -155,7 +160,7 @@
 			xhr.open("POST", "http://127.0.0.1:8000/api/rest-auth/logout/");
 			xhr.onreadystatechange = function(){
 				if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
-					window.location.replace("http://127.0.0.1:8000/");
+					window.location.href = "http://127.0.0.1:8000/";
 				}
 			}
 			xhr.send();
@@ -171,7 +176,7 @@
 				}
 			}
 			xhr.send();
-		}
-
+        }
+        
   </script>
 </html>

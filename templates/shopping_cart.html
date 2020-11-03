@@ -1,14 +1,41 @@
 {% extends 'navbar.html' %}
 
 {% block content %}
-    <h2 id = "title"></h2>
+    <h2 id = "title">Il tuo carrello</h2>
+    <ul id = "item_list">
+
+    </ul>
 
     <script>
-        //c'è modo di ottenere l'utente corrente dal template precedente?
-        var current_user = '';
-	    get_logged_username('http://127.0.0.1:8000/api/get-logged-user/', function(result){
-            document.getElementById("title").innerHTML = result;
+        //se il token è scaduto, redirigi a pagina di login
+        if(String(get_cookie('token')) === ''){
+            window.location.href = "http://127.0.0.1:8000/login/";
+        }
+
+        get_logged_user(function(result){
+            console.log(result['user']);
+            console.log(result['id']);
+            console.log(String(get_cookie('token')))
+
+            xhr = new XMLHttpRequest();
+            xhr.open("GET", "http://127.0.0.1:8000/api/orders/"+String(result['id']))
+            xhr.setRequestHeader('Authorization', 'Token '+ String(get_cookie('token')));
+            xhr.send();
+            xhr.onreadystatechange = function(){
+                if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
+                    response = JSON.parse(xhr.responseText);
+                    console.log(response);
+                    $.each(response, function(i, j){
+                        $("#item_list").append(`
+                            <li> name = ${response[i]['article']['name']} , amount = ${response[i]['amount']} </li> 
+                        `);
+                    })
+                }
+					
+            }
         });
+        //ottieni articoli nel carrello
+        
 
     </script>
 {% endblock content %}

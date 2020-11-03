@@ -7,3 +7,8 @@ content-type: application/json
     "username": "user1",
     "password": "ultraviolent1"
 }
+
+### get user cartn
+GET http://127.0.0.1:8000/api/orders/5 HTTP/1.1
+content-type: application/json
+Authorization: Token 89fb6b94f47bb169e21d1ef6ab64cf398445e196

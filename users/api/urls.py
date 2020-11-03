@@ -10,5 +10,6 @@ urlpatterns = [
     path("obtain-token/", obtain_auth_token, name = "obtain-token"),    # ottieni token utente
     path("register-user/", registration_view, name = "register-user"),  # registrazione nuovo utente
 
-    path("get-logged-user/", get_logged_user_view, name = "get-logged-user"),
+    path("get-logged-user/", get_logged_user_view, name = "get-logged-user"),   
+    path("user-test/", user_test),
 ]

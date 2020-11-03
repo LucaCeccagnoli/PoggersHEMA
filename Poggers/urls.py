@@ -19,6 +19,7 @@ from django_registration.backends.one_step.views import RegistrationView # regis
 
 from users.forms import CustomUserForm  # form di registrazione customizzato
 from users.views import *
+from articles.views import *
 
 from core.views import IndexTemplateView
 from users.forms import CustomUserForm
@@ -36,6 +37,9 @@ urlpatterns = [
     path("registration/", RegistrationView.as_view()),          # registrazione
     path("login/", LoginView.as_view()),                        # login
     path("shopping-cart/", ShoppingCartView.as_view()),         # ordini
+    
+    #da rimuovere, gestito dal client
+    #path("add-to-cart/<int:pk>", AddToCart.as_view()),    # aggiungi un oggetto al carrello
 
     # api
     path('api/', include("users.api.urls")),                    

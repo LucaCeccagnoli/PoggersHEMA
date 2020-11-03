@@ -19,8 +19,8 @@ class ArticleDetailSerializer(serializers.ModelSerializer):
         model = Article
         fields = [  "pk",
                     "name",
+                    "description",
                     "material",
-                    "weight",
                     "price",
                     "stock",
                 ]  
@@ -42,3 +42,10 @@ class OrderDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = "__all__"
+
+class OrderItemListSerializer(serializers.ModelSerializer):
+    article = ArticleDetailSerializer(read_only = True)
+
+    class Meta:
+        model = OrderItem
+        fields = ("article", "amount")

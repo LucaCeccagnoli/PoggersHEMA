@@ -39,7 +39,8 @@ class UserListAPIView(generics.ListAPIView):
 
 @api_view(['POST',])
 def registration_view(request):
-    #print(request.data)
+    print(request.data)
+    context = {}
 
     if request.method == 'POST':
         serializer = RegistrationSerializer(data = request.data)
@@ -47,33 +48,39 @@ def registration_view(request):
             user = serializer.save()
             print( "registered new user: ",user.username)
 
-            #se la registrazione ha successo, reindirizza alla pagina principale
-            return HttpResponseRedirect("/")
+            context["registration"] = "Registrated successfully as " + user.username
+            
         else:
-            errors = {}
             #salva errori del serializer in un dizionario
-            if 'username' in serializer.errors: errors['username'] = serializer.errors['username'][0]
-            if 'email' in serializer.errors: errors['email'] = serializer.errors['email'][0]
-            if 'password' in serializer.errors: serializer.errors['password'][0]
+            if 'username' in serializer.errors: context['username'] = serializer.errors['username'][0]
+            if 'email' in serializer.errors: context['email'] = serializer.errors['email'][0]
+            if 'password' in serializer.errors: context['password'] = serializer.errors['password'][0]
 
-            jsonMessages = json.dumps(errors)
-
-            #ritorna un json di risposta con gli errori
-            return JsonResponse(errors)
-
-    # comportamento di default: ricarica la pagina
-    return HttpResponseRedirect("/registration/")
+    return JsonResponse(context)
 
 def  get_logged_user_view(request):
     if request.method == 'GET':
-        current_user = request.user
+        print(request.user)
         message = {}
-        if current_user is not None:
-            message["user"] = current_user.username
+        if request.user.is_authenticated:
+            message["user"] = request.user.username
+            message["id"] = request.user.id
+            message["token"] = str(Token.objects.get(user_id = request.user.id))
         else:
             message["user"] = ""
+            message["id"] = ""
+            message["token"] = ""
+            print("utente non autenticato")
         
         return JsonResponse(message)
+
+@api_view(['POST',])
+def user_test(request):
+    if request.method == "POST":
+        token =  Token.objects.get(key = request.data["token"])
+        user = CustomUser.objects.get(id = token.user.id)
+        print(user.id)
+        return JsonResponse({ "user" : user})
 
 '''
 @api_view(['POST',])

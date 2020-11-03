@@ -11,7 +11,7 @@
     <title> Poggers </title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
     {% block content %}
@@ -24,9 +24,9 @@
           alt="Card image cap"
           >
         <div class="card-body" style = "height: 200px;">
-          <h5 class="card-title">Mnicwaft diamante hack 10%% vera</h5>
-          <p class="card-text">subcribble to my channel pls</p>
-          <a href="#" class="btn btn-primary">Subscribe</a> prezzo 
+         	 <h5 class="card-title">Mnicwaft diamante hack 10%% vera</h5>
+          	<p class="card-text">subcribble to my channel pls</p>
+		  	<div class="btn btn-primary" onclick="AddToCart(5)">Add to cart</div>prezzo
         </div>
       </div>
       <div style="padding: 5px; float: left;"></div>
@@ -37,7 +37,7 @@
         <div class="card-body" style = "height: 200px;">
           <h5 class="card-title">An actual falchion</h5>
           <p class="card-text">fuck u fire emblem</p>
-          <a href="#" class="btn btn-primary">ELP</a> farma nell'arena
+          <adiv class="btn btn-primary" onclick="AddToCart(10)">Add to Cart</div> farma nell'arena
         </div>
       </div>
 	  </div>
@@ -48,6 +48,49 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 	  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
-      {% endblock %}
+      
 </body>
+	<script>
+		function AddToCart(key){
+			token = get_cookie("token");
+			if(token != ''){
+				get_article_detail(key, function(result){
+					//richiesta di aggiunta al carrello
+					result["token"] = token;
+
+					var xhr = new XMLHttpRequest();
+					xhr.open("POST", "http://127.0.0.1:8000/api/add-to-cart/");
+					xhr.setRequestHeader('Content-Type', 'application/json');
+					xhr.send(JSON.stringify(result));
+
+					//se la richiesta ha successo, notifica l'utente
+					xhr.onreadystatechange = function(){
+						if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
+							response = JSON.parse(xhr.responseText);
+							console.log(response['message']);
+							console.log(response['error']);
+						}
+					}
+				});
+			}
+		}
+
+
+		function user_test(){
+			token = get_cookie("token");
+			if(token != ''){
+				xhr = new XMLHttpRequest();
+				xhr.open("POST", 'http://127.0.0.1:8000/api/user-test/');
+				xhr.setRequestHeader('Content-Type', 'application/json');
+				data = { "token": token }
+				console.log(data);
+    			xhr.send(JSON.stringify(data));
+			}
+			else{
+				console.log("utente non loggato, redirigi a login ...")
+			}
+			// utente non loggato
+		}
+	</script>
+	{% endblock %}
 </html>

@@ -9,12 +9,13 @@
     <title>Document</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     {% load crispy_forms_tags %}
 
 </head>
 <body>
     {% block content %}
+
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <div class = "container">
         <h1>Registration</h1>
         <form id = "reg_form" method = "post">
@@ -28,12 +29,11 @@
         <br>
         <p id = "errors" class = "text-danger"></p>
     </div>
-    {% endblock content %}
 </body>
 <script>
     var messages = []
 
-    document.getElementById("reg_form").addEventListener('submit', (e) =>{
+    $("#reg_form").on('submit', (e) =>{
         e.preventDefault()   //impedisce l'invio del form
 
         var xhr = new XMLHttpRequest();
@@ -60,14 +60,19 @@
         xhr.onreadystatechange = function(){
             if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
                 response = xhr.responseText;
-                response = JSON.parse(response)
-                var message = '';
-                for(var i in response){
-                    append_message(response[i]);
-                }
+                response = JSON.parse(response);
+                console.log(response);
 
-                //se ci sono errori del server
-                print_messages()
+                if(response['registration'] !== ''){
+                    //la registrazione ha avuto successo, torna alla homepage
+                    window.location.href = "http://127.0.0.1:8000/";
+                }
+                else{
+                    for(var i in response){
+                        append_message(response[i]);
+                    }
+                    print_messages();
+                }
             }
         }
 
@@ -96,4 +101,7 @@
     }
     
 </script>
+
+    {% endblock content %}
+
 </html>
