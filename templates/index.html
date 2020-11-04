@@ -9,16 +9,7 @@
 	    width: 18rem;
 	    float: left;
 	  }
-
-	  .container-border{
-	    /*border: solid #f7f7f9;*/
-	  }
 	</style>
-		<form action="http://127.0.0.1:8000/" method = "get">
-			<input type="hidden" name="category" value = "protections">
-			<input type="hidden" name="sub_category" value = "head">
-			<input type="submit" value="reload">
-		</form>
   <!-- cards articoli -->
     <div  class=" container
                   container-border"> 
@@ -38,7 +29,7 @@
 	  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
 	<script>
-		articles_url = "http://127.0.0.1:8000/api/articles/"
+		articles_url = "http://127.0.0.1:8000/api/article-list/"
 
 		//ottieni i parametri per le categorie dall'url della pagina
 		var query_string = window.location.search;
@@ -56,11 +47,13 @@
 
 		getArticles(articles_url);
 
-		function AddToCart(key){
+		function addToCart(key){
 			token = get_cookie("token");
-			if(token != ''){
+			if(token !== ''){
+				console.log("chiave item: ",key)
 				get_article_detail(key, function(result){
 					//richiesta di aggiunta al carrello
+					console.log(result);
 					result["token"] = token;
 
 					var xhr = new XMLHttpRequest();
@@ -77,6 +70,9 @@
 						}
 					}
 				});
+			}
+			else{
+				window.location.href = "http://127.0.0.1:8000/login/"
 			}
 		}
 

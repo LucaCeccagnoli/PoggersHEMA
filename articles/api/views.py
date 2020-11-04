@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect, JsonResponse
 from django.db import IntegrityError
 from rest_framework import generics, mixins, permissions
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -50,11 +51,18 @@ class ArticleDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ArticleDetailSerializer
     permission_classes = [IsAdminUserOrReadonly]
 
+# lista di tutti gli oggetti negli ordini, solo per amministratori
+# solo per testare
+class OrderItemDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = OrderItem.objects.all()
+    serializer_class = OrderItemListSerializer
+    permission_classes = [IsAuthenticated]
+
 class AddItemAPIView(APIView):
     def post(self, request):
         # messaggi da riportare al client 
         response = {}
-        token =  Token.objects.get(key = request.data["token"])
+        token =  Token.objects.get(key = request.data['token'])
         user = CustomUser.objects.get(id = token.user.id)
 
         if user.is_authenticated:
@@ -81,9 +89,13 @@ class AddItemAPIView(APIView):
                 item = duplicate_item_query.get()   # ottiene l'item trovato dalla query)
 
                 # OPZIONALE: riduci stock amount ( ? )
-                item.amount += 1
-                response['message'] = item.article.name + "in your order: " + str(item.amount)
-                item.save()
+                print(item.article.stock)
+                if(item.amount >= 9 or item.amount > item.article.stock - 1):
+                    response['error'] = "You can't order more items of this article"
+                else:
+                    item.amount += 1
+                    response['message'] = item.article.name + "in your order: " + str(item.amount)
+                    item.save()
             # se l'articolo viene aggiunto per la prima volta
             else:
                 try:    
@@ -122,6 +134,7 @@ class OrderDetailApiView(generics.GenericAPIView, mixins.ListModelMixin):
         # ottieni oggetti dell'ordine
         self.queryset = OrderItem.objects.filter(order__exact = cart)
         return self.list(request, *args, **kwargs)
+
 
 # class ArticleDetailAPIView(APIView):
 #     def get_object(self, pk):

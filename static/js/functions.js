@@ -6,8 +6,6 @@ function get_jQuery(){
 }
 
 // ottiene articoli con chiamata rest
-// params specifica parametri da appendere all'url della richiesta, per filtrare gli articoli
-// element specifica l'elemento dopo cui stampare i risultati
 function getArticles(url){
     xhr = new XMLHttpRequest();
     xhr.open("GET", url);
@@ -21,15 +19,56 @@ function getArticles(url){
     }
 }
 
+// mostra la carta di un articolo
 function addCard(item){
     var src = "https://images-na.ssl-images-amazon.com/images/I/61dO6Tn1bKL._AC_SL1500_.jpg";
     var textNome = item["name"];
+    var textMateriale = item["material"];
     var textDesc = item["description"];
     var textPrezzo = item["price"];
     var textStock = item["stock"];
 
 
-    var myCard = $(`<div class=" card card-size"> <img class="card-img-top" src=${src}> <div class="card-body"> <h5 class="card-title">${textNome}</h5> <p class="card-text">${textDesc}</p>Prezzo: ${textPrezzo}<a href="#" class="btn btn-primary" style="float: right;"> Carrello </a> </div><div class="card-footer"> <small class="text-muted">In Stock: ${textStock}</small> </div></div>`);
+    var myCard = $(`<div class=" card card-size"> 
+                        <img class="card-img-top" src=${src}> 
+                        <div class="card-body"> 
+                            <h5 class="card-title">${textNome} - ${textMateriale}</h5> 
+                            <p class="card-text">${textDesc}</p>
+                            <p> Prezzo: ${textPrezzo} €</p>
+                            <small>In Stock: ${textStock}</small> 
+                            <button
+                                style = "float: right;"
+                                class="btn btn-primary" 
+                                onclick = "addToCart(${parseInt(item['pk'])})">
+                                Add To Cart 
+                            </button>
+                        </div>
+                    </div>`);
+    myCard.appendTo('#container-carte');
+}
+
+//mostra la carta di un OrderItem
+function addItemCard(item, article){
+    var src = "https://images-na.ssl-images-amazon.com/images/I/61dO6Tn1bKL._AC_SL1500_.jpg";
+    var textNome = article['name'];
+    var textPrezzo = article['price'];
+    var amount = item['amount'];
+    var item_id = item['id'];
+
+    var myCard = $(`<div class=" card card-size"> 
+                        <img class="card-img-top" src=${src}> 
+                            <div class="card-body"> 
+                                <h5 class="card-title">${textNome}</h5> 
+                                <p class="card-text">
+                                    <input class = "form-control-sm" type="number" style = "float:left;" 
+                                    value="${amount}" min="1" max="9" step="1"
+                                    onchange="amountChanged(${item_id},this.value)"/>
+                                </p> 
+                                <button class = "btn btn-danger" style = "float:right; margin:3px 0px;"
+                                        onclick = 'removeItem(${item_id})'>Remove</button>
+                                Single Price: ${textPrezzo} €
+                            </div>
+                        </div>`);
     myCard.appendTo('#container-carte');
 }
 
@@ -38,7 +77,7 @@ function addCard(item){
 function get_article_detail(key, callback){
     var xhr = new XMLHttpRequest();
 
-    xhr.open("GET", "http://127.0.0.1:8000/api/articles/" + key);
+    xhr.open("GET", "http://127.0.0.1:8000/api/article-detail/" + key);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send();
 

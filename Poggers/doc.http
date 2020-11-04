@@ -8,7 +8,16 @@ content-type: application/json
     "password": "ultraviolent1"
 }
 
-### get user cartn
+### get user cart
 GET http://127.0.0.1:8000/api/orders/5 HTTP/1.1
 content-type: application/json
 Authorization: Token 89fb6b94f47bb169e21d1ef6ab64cf398445e196
+
+### order item detail
+PATCH http://127.0.0.1:8000/api/order-items/18 HTTP/1.1
+content-type: application/json
+Authorization: Token 89fb6b94f47bb169e21d1ef6ab64cf398445e196
+
+{
+    "amount": 5
+}

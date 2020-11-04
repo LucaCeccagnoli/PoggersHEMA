@@ -32,7 +32,11 @@ class LoginView(View):
 class ShoppingCartView(View):
     def get(self, request):
         current_user = request.user
+        form = PaymentForm()
+        context = {
+            "form" : form
+        }
         if current_user.is_authenticated:
-            return render(request, "shopping_cart.html")
+            return render(request, "shopping_cart.html", context)
         else:
             return HttpResponseRedirect("/login/")

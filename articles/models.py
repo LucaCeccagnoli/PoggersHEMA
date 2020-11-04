@@ -42,6 +42,6 @@ class OrderItem(models.Model):
     amount = models.IntegerField(default = 1)
     
     def __str__(self):
-        return self.article.name + "( " + str(self.amount) + " )" + "order: " + self.order.ref_code
+        return self.article.name + "( " + str(self.amount) + " )" + "order: " + self.order.ref_code + " pk: " + str(self.pk)
 
 

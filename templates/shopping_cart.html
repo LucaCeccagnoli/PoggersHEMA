@@ -1,40 +1,116 @@
 {% extends 'navbar.html' %}
 
 {% block content %}
-    <h2 id = "title">Il tuo carrello</h2>
-    <ul id = "item_list">
+{% load crispy_forms_tags %}
+    <style media="screen">
+        .card-size{
+          width: 15rem;
+          float: left;
+        }
 
-    </ul>
+      </style>
+    <script src = "http://127.0.0.1:8000/static/bootstrap-input-spinner-master/src/bootstrap-input-spinner.js"></script>
+
+    <h2 class = "container" id = "title">Il tuo carrello</h2>
+    <div class="container">
+            <div class="row">
+                <div class="col-sm">
+                    <!-- cards articoli -->
+                    <div  class="   container 
+                                    container-border
+                                    "> 
+                    <!-- DECK CARTE -->
+                    <div class="row"
+                        id="container-carte">
+                    <!-- CARTE SINGOLE -->
+            </div>
+    </div>
+            </div>
+            <div class="col-sm border rounded">
+                <h2 id = "total_price"></h2>
+                <form method="post" action = "http://127.0.0.1:8000/shopping-cart/">
+                    {% csrf_token %}    
+                    {{ form|crispy }}
+                    <input class = "btn btn-success" type="submit" value="Confirm Order 66">
+                </form>
+            </div>
+    </div>
+
 
     <script>
+        var user_id = '';
+        //salva localmente informazioni sugli oggetti
+        var items = [];
+
         //se il token è scaduto, redirigi a pagina di login
         if(String(get_cookie('token')) === ''){
             window.location.href = "http://127.0.0.1:8000/login/";
         }
 
+        //carica carrello
         get_logged_user(function(result){
-            console.log(result['user']);
-            console.log(result['id']);
-            console.log(String(get_cookie('token')))
-
+            user_id = result['id'];
             xhr = new XMLHttpRequest();
-            xhr.open("GET", "http://127.0.0.1:8000/api/orders/"+String(result['id']))
+            xhr.open("GET", "http://127.0.0.1:8000/api/orders/"+user_id);
             xhr.setRequestHeader('Authorization', 'Token '+ String(get_cookie('token')));
             xhr.send();
             xhr.onreadystatechange = function(){
+                // carica carte con oggetti del carrello
                 if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
                     response = JSON.parse(xhr.responseText);
-                    console.log(response);
-                    $.each(response, function(i, j){
-                        $("#item_list").append(`
-                            <li> name = ${response[i]['article']['name']} , amount = ${response[i]['amount']} </li> 
-                        `);
-                    })
-                }
-					
+                    $.each(response, function(i){
+                        addItemCard(response[i], response[i]['article']);
+                        items.push({"id":response[i]['id'], 
+                                    "amount":response[i]['amount'],
+                                    "price":response[i]['article']['price']});
+                        console.log(items);
+                    });
+                    //attiva input spinner
+                    $("input[type='number']").inputSpinner();
+                    $("#total_price").html("Total Price: "+ String(get_total_price().toFixed(2) + " €"));
+                }	
             }
         });
-        //ottieni articoli nel carrello
+
+        function get_total_price(){
+            var total_price = 0;
+            $.each(items, function(i){
+                total_price += items[i]["price"] * items[i]["amount"]; 
+            });
+            return total_price
+        }
+
+        //richiesta patch per aggiornare la quantità dell'ordine
+        function amountChanged(id, amount){
+            console.log("new amount for ", id, " : ", amount);
+            xhr = new XMLHttpRequest();
+            xhr.open("PATCH", "http://127.0.0.1:8000/api/order-items/"+id)
+            xhr.setRequestHeader("content-type","application/json")
+            xhr.setRequestHeader("Authorization","Token "+get_cookie("token"))
+            xhr.send(JSON.stringify(
+                {
+                    "amount": parseInt(amount)
+                }
+            ));
+            xhr.onreadystatechange = function(){
+                if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
+                    window.location.href = "http://127.0.0.1:8000/shopping-cart"
+                }
+            }
+        }
+
+        //richiesta delete per cancellare l'orderitem
+        function removeItem(id){
+            xhr = new XMLHttpRequest();
+            xhr.open("DELETE", "http://127.0.0.1:8000/api/order-items/"+id)
+            xhr.setRequestHeader("Authorization","Token "+get_cookie("token"))
+            xhr.send()
+            xhr.onreadystatechange = function(){
+                if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 204){
+                    window.location.href = "http://127.0.0.1:8000/shopping-cart"
+                }
+            }
+        }
         
 
     </script>

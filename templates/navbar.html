@@ -50,7 +50,7 @@
         <div class = "user-tab" style = "float: right;"> 
             <div id = "logged_user"></div>
             <button id = "login-button" class="btn btn-primary" onclick="location.href='http://127.0.0.1:8000/login/' " hidden> Login</a>
-            <button id = "logout-button" class="btn btn-danger" onclick="logout()" hidden>Logout</button>
+            <button id = "logout-button" class="btn btn-danger" onclick='logout("http://127.0.0.1:8000/")' hidden>Logout</button>
             <button id = "cart-button" class="btn btn-success" onclick="location.href='http://127.0.0.1:8000/shopping-cart/' " hidden>Shopping Cart</button>
         </div>
     </nav>
@@ -69,13 +69,13 @@
               Simulators
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="?category=simulator&subcategory=sword1h">One Handed Swords</a>
+              <a class="dropdown-item" href="?category=simulator&sub_category=sword1h">One Handed Swords</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="?category=simulator&subcategory=sword2h">Two Handed Swords</a>
+              <a class="dropdown-item" href="?category=simulator&sub_category=sword2h">Two Handed Swords</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="?category=simulator&subcategory=axe">Axes</a>              
+              <a class="dropdown-item" href="?category=simulator&sub_category=axe">Axes</a>              
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="?category=simulator&subcategory=polearms">Polearms</a>
+              <a class="dropdown-item" href="?category=simulator&sub_category=polearms">Polearms</a>
             </div>
           </li>
           <li class="nav-item dropdown">
@@ -83,13 +83,13 @@
               Protections
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="?category=protections&subcategory=head">Head</a>
+              <a class="dropdown-item" href="?category=protections&sub_category=head">Head</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="?category=protections&subcategory=torso">Torso</a>
+              <a class="dropdown-item" href="?category=protections&sub_category=torso">Torso</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="?category=protections&subcategory=hands">Hands</a>
+              <a class="dropdown-item" href="?category=protections&sub_category=hands">Hands</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="?category=protections&subcategory=legs">Legs</a>
+              <a class="dropdown-item" href="?category=protections&sub_category=legs">Legs</a>
               <div class="dropdown-divider"></div>
             </div>
           </li>
@@ -98,11 +98,11 @@
               Shields
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="?category=shield&subcategory=buckler">Bucklers</a>
+              <a class="dropdown-item" href="?category=shield&sub_category=buckler">Bucklers</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="?category=shield&subcategory=targes">Targes</a>
+              <a class="dropdown-item" href="?category=shield&sub_category=targes">Targes</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="?category=shield&subcategory=rotella">Rotellas</a>
+              <a class="dropdown-item" href="?category=shield&sub_category=rotella">Rotellas</a>
             </div>
           </li>
         </ul>
@@ -122,7 +122,7 @@
   <script>
 		var current_user = '';
 		var login_btn = document.getElementById("login-button");
-      	var logout_btn = document.getElementById("logout-button");
+    var logout_btn = document.getElementById("logout-button");
 		var cart_btn = document.getElementById("cart-button");
 
 		//nascondi pulsanti
@@ -130,34 +130,50 @@
 		logout_btn.hidden = true;
 		cart_btn.hidden = true;
 
-        //ottiene l'utente loggato per decidere quali elementi mostrare
-        get_logged_user(function(result){
-            //codice che richiede il nome utente
-            current_user = result['user'];
-            token = result['token'];
+    //ottiene l'utente loggato per decidere quali elementi mostrare
+    get_logged_user(function(result){
+        //codice che richiede il nome utente
+        current_user = result['user'];
+        token = get_cookie("token")
 
-            //se c'è un utente loggato mostra pulsanti logout e carrello, altrimenti pulsante di login
-            if(current_user !== ''){
-
-                $user = current_user;
-                logout_btn.hidden = false;
-                cart_btn.hidden = false;
-                $(".user-tab").append(
-                    "<div class=\"navbar-brand\">Logged as : "+ $user + "</div>",
-                );
-            }
-            else{
-            login_btn.hidden = false;
-            }
-        });
+        if(current_user !== ''){
+          if(token !== ''){
+            //utente loggato: carica pulsanti logout e carrello
+            $user = current_user;
+            logout_btn.hidden = false;
+            cart_btn.hidden = false;
+            $(".user-tab").append(
+                "<div class=\"navbar-brand\">Logged as : "+ $user + "</div>",
+            );
+          }
+          else{
+            //utente loggato ma token scaduto: esegui logout e reindirizza a login
+            logout("http://127.0.0.1:8000/login");
+          }
+        }
+        else{
+          //utente non loggato: carica pulsante di login
+          login_btn.hidden = false;
+          //se c'è ancora un token residuo, lo elimina
+          if(token !== ''){
+            set_cookie("token", '', 0); 
+          }
+        }
+    });
 
 		//pulsante di logout
-		function logout(){
+		function logout(redirect_url){
 			var xhr = new XMLHttpRequest();
 			xhr.open("POST", "http://127.0.0.1:8000/api/rest-auth/logout/");
 			xhr.onreadystatechange = function(){
 				if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
-					window.location.href = "http://127.0.0.1:8000/";
+          //rimuovi token dai cookie(settandolo a vuoto, con durata 0 minuti)
+          if(get_cookie("token") !== ''){
+            set_cookie("token", '', 0); 
+          }
+
+          //redirigi utente alla pagina di input
+					window.location.href = redirect_url;
 				}
 			}
 			xhr.send();
