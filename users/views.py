@@ -53,7 +53,7 @@ class ChangeCredentialsView(View):
             "password_form": password_form
         }
         if current_user.is_authenticated:
-            return render(request, "credentials_change.html", context)
+            return render(request, "account.html", context)
         else:
             return HttpResponseRedirect("/login/")
 

@@ -22,10 +22,10 @@ class PaymentForm(forms.Form):
 class ChangeUsernameForm(forms.Form):
     username = forms.CharField(label = 'new username')
 
-class ChangeEmailFOrm(forms.Form):
+class ChangeEmailForm(forms.Form):
     email = forms.EmailField(label = 'new email')
 
-class ChangePasswordFOrm(forms.Form):
+class ChangePasswordForm(forms.Form):
     password_current = forms.CharField(widget = forms.PasswordInput())
     password_new = forms.CharField(widget = forms.PasswordInput())
     password_info = forms.CharField(widget = forms.PasswordInput())

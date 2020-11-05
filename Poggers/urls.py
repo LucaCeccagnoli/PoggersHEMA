@@ -38,7 +38,7 @@ urlpatterns = [
     path("login/", LoginView.as_view()),                        # login
     path("shopping-cart/", ShoppingCartView.as_view()),         # ordini
     
-    path("change-credentials/", ChangeCredentialsView.as_view(), name = "change-credentials"),  # cambio username e email
+    path("account/", ChangeCredentialsView.as_view(), name = "account"),  # cambio username e email
 
     #pagine per gestori del sito
     path('manager/user-list/', ManagerUserListView.as_view()),

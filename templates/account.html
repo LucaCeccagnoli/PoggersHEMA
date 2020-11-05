@@ -1,0 +1,95 @@
+{% extends 'navbar.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container border-bottom border-primary">
+	<form id="username_form">
+		{% csrf_token %}
+		{{ username_form|crispy }}
+		<div class="form-group col-md-6">
+			<input type="submit" class="btn btn-primary" value="Change Username"></input>
+		</div>
+	</form>
+</div>
+<div class="container border-bottom border-primary">
+	<form id="password_form">
+		{% csrf_token %}
+		{{ password_form|crispy }}
+		<div class="form-group col-md-6">
+			<input type="submit" class="btn btn-primary" value="Change Password"></input>
+		</div>
+	</form>
+</div>
+<div class="container border-bottom border-primary">
+	<form id="email_form">
+		{% csrf_token %}
+		{{ email_form|crispy }}
+		<div class="form-group col-md-6">
+			<input type="submit" class="btn btn-primary" value="Change Email"></input>
+		</div>
+	</form>
+</div>
+{% endblock content %}
+
+<script>
+	// form cambio username
+$("#username_form").on('submit', (e) =>{ 
+    e.preventDefault();
+    xhr.open("POST", "http://127.0.0.1:8000/api/change_credentials/");
+    xhr.setRequestHeader("content-type","application/json")
+    xhr.setRequestHeader("Authorization","Token "+get_cookie("token"))
+    xhr.send(JSON.stringify(
+        {
+            "username": document.getElementById("id_username").value,
+        }
+    ));
+    xhr.onreadystatechange = function(){
+        response = JSON.parse(tokenRequest.responseText);
+        $("#errors").html(response['username'])
+    }
+});
+
+// form cambio email
+$("#email_form").on('submit', (e) =>{ 
+    e.preventDefault();
+    xhr.open("POST", "http://127.0.0.1:8000/api/change_credentials/");
+    xhr.setRequestHeader("content-type","application/json")
+    xhr.setRequestHeader("Authorization","Token "+get_cookie("token"))
+    xhr.send(JSON.stringify(
+        {
+            "email": document.getElementById("id_email").value,
+        }
+    ));
+    xhr.onreadystatechange = function(){
+        response = JSON.parse(tokenRequest.responseText);
+        $("#errors").html(response['email'])
+    }
+});
+
+// form cambio email
+$("#password_form").on('submit', (e) =>{ 
+    e.preventDefault();
+    var pw_current = document.getElementById("id_password_current").value;
+    var pw_new = document.getElementById("id_password_new").value;
+    var pw_confirm = document.getElementById("id_password_old").value;
+
+    if(pw_new === pw_confirm){
+        xhr.open("POST", "http://127.0.0.1:8000/api/change_credentials/");
+        xhr.setRequestHeader("content-type","application/json")
+        xhr.setRequestHeader("Authorization","Token "+get_cookie("token"))
+        xhr.send(JSON.stringify(
+            {
+                "password_current": pw_cur,
+                "password_new": pw_new
+            }
+        ));
+        xhr.onreadystatechange = function(){
+            response = JSON.parse(tokenRequest.responseText);
+            $("#errors").html(response['password'])
+        }
+    }else{
+        $("#errors").html("the two new passwords don't match")
+    }
+});
+</script>
