@@ -69,7 +69,7 @@ class AddItemAPIView(APIView):
             print(request.data)
 
             #controlla se l'utente ha un carrello
-            order_query = Order.objects.filter(owner__exact = user.id )
+            order_query = Order.objects.filter(owner__exact = user.id).filter(is_ordered__exact = False)
             if not order_query:
                 # crea un nuovo carrello
                 cart = Order(ref_code = generate_ref_code(), owner = user)
@@ -79,7 +79,7 @@ class AddItemAPIView(APIView):
                 cart = order_query.first()
                 print("ottenuto carrello esistente")
 
-            # ottieni tutti gli order item del carrello dell'utente
+            # ottieni tutti gli order item del carrello dell'utente che non sono stati spediti
             order_item_query  = OrderItem.objects.filter(order__exact = cart)
 
             # controlla se l'articolo ordinato è già nel carrello
@@ -130,10 +130,27 @@ class OrderDetailApiView(generics.GenericAPIView, mixins.ListModelMixin):
 
     def get(self, request, *args, **kwargs):
         # ottieni carrello dell'utente
-        cart = Order.objects.filter(owner__exact = kwargs['pk']).get()
+        cart = Order.objects.filter(owner__exact = kwargs['pk']).filter(is_ordered__exact = False).get()
         # ottieni oggetti dell'ordine
         self.queryset = OrderItem.objects.filter(order__exact = cart)
         return self.list(request, *args, **kwargs)
+
+# conferma un ordine e genera il relativo shipment
+class ConfirmOrderAPIView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated, isAccountOwner]
+    def post(self, request, *args, **kwargs):
+        messages = {}
+        # ottieni carrello dell'utente
+        order = Order.objects.filter(owner__exact = kwargs['pk']).filter(is_ordered__exact = False).get()
+        # crea uno shipment relativo all'ordine
+        shipment = Shipment(order = order, shipping_address = request.data['address'])
+        # imposta l'ordine come ordinato
+        order.is_ordered = True
+
+        order.save()
+        shipment.save()
+        return JsonResponse(messages)
+
 
 
 # class ArticleDetailAPIView(APIView):

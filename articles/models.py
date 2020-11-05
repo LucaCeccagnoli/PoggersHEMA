@@ -32,10 +32,12 @@ class Order(models.Model):
         return sum([ art.price for art in self.items.all()])
 
     def __str__(self):
-        return "owner : " + str(self.owner.id) + " code : " + self.ref_code
+        is_cart = ''
+        if not self.is_ordered:
+            is_cart = 'is cart'
+        return "owner : " + str(self.owner.id) + " code : " + self.ref_code + ", " + is_cart
 
 # instance of a shopping cart article
-# ! sostituire agli articles semplici nel modello Order
 class OrderItem(models.Model):
     article = models.ForeignKey(Article, on_delete = models.CASCADE)
     order = models.ForeignKey(Order, on_delete = models.CASCADE, null = True)
@@ -44,4 +46,12 @@ class OrderItem(models.Model):
     def __str__(self):
         return self.article.name + "( " + str(self.amount) + " )" + "order: " + self.order.ref_code + " pk: " + str(self.pk)
 
+# dati riguardanti la spedizione di un ordine
+class Shipment(models.Model):
+    order = models.ForeignKey(Order, on_delete = models.SET_NULL, null = True)
+    shipping_address = models.TextField(max_length = 255, default = '')
+    date = models.DateField(auto_now_add = True)
+
+    def __str__(self):
+        return "order: "+ str(self.order.ref_code) + " shipped on: " + str(self.date) 
 

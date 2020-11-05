@@ -10,8 +10,10 @@
 
       </style>
     <script src = "http://127.0.0.1:8000/static/bootstrap-input-spinner-master/src/bootstrap-input-spinner.js"></script>
-
-    <h2 class = "container" id = "title">Il tuo carrello</h2>
+    <div class = "row container">
+        <h2 class = "col-sm" id = "title">Your Shopping Cart</h2>
+        <p class = "col-sm text-danger" id = "messages"></p>
+    </div>  
     <div class="container">
             <div class="row">
                 <div class="col-sm">
@@ -26,12 +28,15 @@
             </div>
     </div>
             </div>
-            <div class="col-sm border rounded">
-                <h2 id = "total_price"></h2>
-                <form method="post" action = "http://127.0.0.1:8000/shopping-cart/">
+            <div class="col-sm border rounded p-3">
+                <p id = "item_price"></h4>
+                <p>shipment price: 4.99 €</p>
+                <hr>
+                <h5 id = "total_price"></h5>
+                <form id = "order_form" method="post" action = "http://127.0.0.1:8000/shopping-cart/">
                     {% csrf_token %}    
                     {{ form|crispy }}
-                    <input class = "btn btn-success" type="submit" value="Confirm Order 66">
+                    <input class = "btn btn-success" type="submit" value="Confirm Order">
                 </form>
             </div>
     </div>
@@ -67,8 +72,49 @@
                     });
                     //attiva input spinner
                     $("input[type='number']").inputSpinner();
-                    $("#total_price").html("Total Price: "+ String(get_total_price().toFixed(2) + " €"));
+                    var item_price = get_total_price();
+                    var total_price = item_price + 4.99;
+                    console.log(total_price);
+                    $("#item_price").html("Item Price: "+ String(item_price) + " €");
+                    $("#total_price").html("Total Price: "+ String(total_price)+ " €");
                 }	
+            }
+        });
+
+        // form conferma ordine
+        $("#order_form").on('submit', (e) =>{ 
+            e.preventDefault();
+            //se non ci sono oggetti, riporta errore
+            if(items.length < 1){
+                $("#messages").html("You haven't ordered aything yet")
+            }
+            else{
+                var number = document.getElementById("id_cc_number").value;
+                var expiry = document.getElementById("id_cc_expiry").value;
+                var code = document.getElementById("id_cc_code").value;
+                var address = document.getElementById("aid_address").value;
+                console.log(address)
+                console.log(number)
+                //trova il carrello dell'utente, imposta l'ordine a "ordinato" e crea uno shipment
+                xhr.open("POST", "http://127.0.0.1:8000/api/confirm-order/"+user_id);
+                xhr.setRequestHeader("content-type","application/json")
+                xhr.setRequestHeader("Authorization","Token "+get_cookie("token"))
+                xhr.send(JSON.stringify(
+                    {
+                        "cc_number": number,
+                        "cc_expiry":  expiry,
+                        "cc_code": code,
+                        "address": address
+                    }
+                ));
+                xhr.onreadystatechange = function(){
+                    if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
+                        window.location.href = "http://127.0.0.1:8000/shopping-cart"
+                    }
+                    else if(xhr.readyState == XMLHttpRequest.DONE){
+                        $("#messages").html("Transaction insuccessful")
+                    }
+                }
             }
         });
 

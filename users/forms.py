@@ -17,3 +17,4 @@ class PaymentForm(forms.Form):
     cc_number = CardNumberField(label='Card Number')
     cc_expiry = CardExpiryField(label='Expiration Date')
     cc_code = SecurityCodeField(label='CVV/CVC')
+    address = forms.CharField(max_length = 100, required = True)
