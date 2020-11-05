@@ -18,3 +18,14 @@ class PaymentForm(forms.Form):
     cc_expiry = CardExpiryField(label='Expiration Date')
     cc_code = SecurityCodeField(label='CVV/CVC')
     address = forms.CharField(max_length = 100, required = True)
+
+class ChangeUsernameForm(forms.Form):
+    username = forms.CharField(label = 'new username')
+
+class ChangeEmailFOrm(forms.Form):
+    email = forms.EmailField(label = 'new email')
+
+class ChangePasswordFOrm(forms.form):
+    password_current = forms.CharField(widget = forms.PasswordInput())
+    password_new = forms.CharField(widget = forms.PasswordInput())
+    password_info = forms.CharField(widget = forms.PasswordInput())

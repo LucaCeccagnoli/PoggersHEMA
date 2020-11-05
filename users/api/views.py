@@ -3,9 +3,10 @@ from django.contrib.auth import authenticate, login, logout
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.decorators import api_view, authentication_classes
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authtoken.models import Token
 from rest_framework import permissions
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
 
 from users.models import *
@@ -73,6 +74,38 @@ def  get_logged_user_view(request):
             print("utente non autenticato")
         
         return JsonResponse(message)
+
+@api_view(['POST',])
+@permission_classes([IsAuthenticated])
+def change_credentials(request):
+    if request.method == "POST":
+        #ottieni l'utente
+        print(request.user)
+        errors = {}
+        user = Users.objects.filter(id_exact = request.user).get()
+        #cambio username
+        if 'username' in request.data:
+            if not Users.objects.filter(username__exact = username):
+                user.username = request.data['username']
+            else:
+                errors["username"] = "this username already exists"
+        #cambio email
+        if 'email' in request.data:
+            if not User.objects.filter(email__exact = email):
+                user.email = request.data['email']
+            else:
+                errors["email"] = "this email already exists"
+
+        #cambio password
+        if 'password' in request.data:
+            # se la password attuale è corretta, assegna la nuova, altrimenti ritorna errore
+            if request.data['password_current'] == user.password:
+                    user.password = request.data['password_new']
+            else:
+                errors['password'] = 'you current password doesn\' t match'
+
+        return JsonResponse(errors)
+            
 
 @api_view(['POST',])
 def user_test(request):

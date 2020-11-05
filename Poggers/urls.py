@@ -38,9 +38,8 @@ urlpatterns = [
     path("login/", LoginView.as_view()),                        # login
     path("shopping-cart/", ShoppingCartView.as_view()),         # ordini
     
-    #da rimuovere, gestito dal client
-    #path("add-to-cart/<int:pk>", AddToCart.as_view()),    # aggiungi un oggetto al carrello
-
+    path("change-credentials/", ChangeCredentialsView.as_view(), name = "change-credentials"),  # cambio username e email
+    
     # api
     path('api/', include("users.api.urls")),                    
     path('api/', include("articles.api.urls")),

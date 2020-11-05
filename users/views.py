@@ -40,3 +40,15 @@ class ShoppingCartView(View):
             return render(request, "shopping_cart.html", context)
         else:
             return HttpResponseRedirect("/login/")
+
+class ChangeCredentialsView(View):
+    def get(self, request):
+        current_user = request.user
+        form = ChangeCredentialsForm()
+        context = {
+            "form" : form
+        }
+        if current_user.is_authenticated:
+            return render(request, "credentials_change.html", context)
+        else:
+            return HttpResponseRedirect("/login/")

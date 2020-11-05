@@ -10,6 +10,8 @@ urlpatterns = [
     path("obtain-token/", obtain_auth_token, name = "obtain-token"),    # ottieni token utente
     path("register-user/", registration_view, name = "register-user"),  # registrazione nuovo utente
 
+    path("change-credentials/", change_credentials, name = "change-credentials"),   #cambio credenziali
+
     path("get-logged-user/", get_logged_user_view, name = "get-logged-user"),   
-    path("user-test/", user_test),
+    path("user-test/", user_test),  #usata solo per debugging
 ]
