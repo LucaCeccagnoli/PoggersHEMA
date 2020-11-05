@@ -25,7 +25,7 @@ class ChangeUsernameForm(forms.Form):
 class ChangeEmailFOrm(forms.Form):
     email = forms.EmailField(label = 'new email')
 
-class ChangePasswordFOrm(forms.form):
+class ChangePasswordFOrm(forms.Form):
     password_current = forms.CharField(widget = forms.PasswordInput())
     password_new = forms.CharField(widget = forms.PasswordInput())
     password_info = forms.CharField(widget = forms.PasswordInput())

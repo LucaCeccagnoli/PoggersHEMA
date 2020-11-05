@@ -21,3 +21,7 @@ Authorization: Token 89fb6b94f47bb169e21d1ef6ab64cf398445e196
 {
     "amount": 5
 }
+
+### order item detail
+GET http://127.0.0.1:8000/api/user-list/ HTTP/1.1
+Authorization: Token 89fb6b94f47bb169e21d1ef6ab64cf398445e196

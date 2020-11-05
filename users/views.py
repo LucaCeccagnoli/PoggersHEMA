@@ -44,11 +44,19 @@ class ShoppingCartView(View):
 class ChangeCredentialsView(View):
     def get(self, request):
         current_user = request.user
-        form = ChangeCredentialsForm()
+        username_form = ChangeUsernameForm()
+        email_form = ChangeEmailForm()
+        password_form =  ChangePasswordForm()
         context = {
-            "form" : form
+            "username_form" : username_form,
+            "email_form": email_form,
+            "password_form": password_form
         }
         if current_user.is_authenticated:
             return render(request, "credentials_change.html", context)
         else:
             return HttpResponseRedirect("/login/")
+
+class ManagerUserListView(View):
+    def get(self, request):
+        return render (request, "user-list.html")

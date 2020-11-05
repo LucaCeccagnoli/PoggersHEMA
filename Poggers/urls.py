@@ -29,7 +29,7 @@ from rest_auth import urls
 # la registrazione tramite api avviene con rest-auth, mentre quella degli utenti con django-registration
 
 urlpatterns = [
-    # pagina amministrazione
+    # pagina amministrazione staff
     path('admin/', admin.site.urls),
 
     # url pagine html
@@ -39,6 +39,9 @@ urlpatterns = [
     path("shopping-cart/", ShoppingCartView.as_view()),         # ordini
     
     path("change-credentials/", ChangeCredentialsView.as_view(), name = "change-credentials"),  # cambio username e email
+
+    #pagine per gestori del sito
+    path('manager/user-list/', ManagerUserListView.as_view()),
     
     # api
     path('api/', include("users.api.urls")),                    

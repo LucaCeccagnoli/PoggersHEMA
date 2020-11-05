@@ -92,6 +92,8 @@ function get_article_detail(key, callback){
 
 // richiesta http all'api che controlla l'utente loggato
 // ritorna l'username dell'utente loggato, o una stringa vuota se il login non è stato effettuato
+// la funzione di callback permette di eseguire delle operazioni con il risultato della funzione,
+// assegnato a response
 function get_logged_user(callback){
     var xhr = new XMLHttpRequest();
     xhr.open("GET", 'http://127.0.0.1:8000/api/get-logged-user/');

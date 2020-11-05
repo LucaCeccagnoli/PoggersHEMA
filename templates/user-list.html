@@ -1,0 +1,40 @@
+{% extends 'navbar.html' %}
+{% load static %}
+{% block content %}
+<div id = "user_list" class= "container">
+    <div class = "border rounded">
+        <p><div id = "Id">19</div> <div id = "username">User1</div></p>
+        <p id = email>user1@luca.it</p>
+    </div>
+</div>
+
+<script>
+//mostra lista utenti in pagina amministratore
+function getUserList(){
+    xhr.open("GET", "http://127.0.0.1:8000/api/users-list/");
+    xhr.setRequestHeader("Authorization","Token "+get_cookie("token"))
+    xhr.send();
+    xhr.onreadystatechange = function(){
+        response = JSON.parse(tokenRequest.responseText);
+        $(response).each(function(i){
+            console.log(response[i]['id'])
+            console.log(response[i]['username'])
+            console.log(response[i]['email'])
+        })
+    }
+}
+
+//elimina un utente
+function removeUser(id){
+    xhr = new XMLHttpRequest();
+    xhr.open("DELETE", "http://127.0.0.1:8000/api/user/"+id)
+    xhr.setRequestHeader("Authorization","Token "+get_cookie("token"))
+    xhr.send()
+    xhr.onreadystatechange = function(){
+        if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 204){
+            window.location.href = "http://127.0.0.1:8000/admin/user-list"
+        }
+    }
+}
+</script>
+{% endblock content %}
