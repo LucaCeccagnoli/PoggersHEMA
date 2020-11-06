@@ -8,6 +8,6 @@ class CustomUserAdmin(UserAdmin):
     model = CustomUser
 
     # i campi che verranno mostrati nella pagina cambio lista dell'admin
-    list_display = ["id", "email", "username", "is_staff"]
+    list_display = ["id", "email", "username", "is_admin", "is_staff"]
 
 admin.site.register(CustomUser, CustomUserAdmin)

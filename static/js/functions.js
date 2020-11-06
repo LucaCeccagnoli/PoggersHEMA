@@ -98,13 +98,13 @@ function get_logged_user(callback){
     var xhr = new XMLHttpRequest();
     xhr.open("GET", 'http://127.0.0.1:8000/api/get-logged-user/');
     xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Authorization', 'Token '+get_cookie('token'));
     xhr.send();
 
     xhr.onreadystatechange = function(){
         if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
             var response = xhr.responseText;
             response = JSON.parse(response);
-
             callback(response);
         }
     }

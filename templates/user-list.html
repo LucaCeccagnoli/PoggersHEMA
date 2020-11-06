@@ -1,38 +1,121 @@
 {% extends 'navbar.html' %}
 {% load static %}
+
 {% block content %}
+<!--script src="http://127.0.0.1:8000/static/js/functions.js"></script-->
+<h1 class = "container p-2 border-bottom border-secondary">User Management Panel</h1>
 <div id = "user_list" class= "container">
-    <div class = "border rounded">
-        <p><div id = "Id">19</div> <div id = "username">User1</div></p>
-        <p id = email>user1@luca.it</p>
+    <div class = "row border-bottom border-secondary">
+        <div class = "col-1 h3">ID</div>
+        <div class = "col-2 h3" >Username</div>
+        <div class = "col-2 h3">Email</div>
+        <div class = "col-1 h3">Manager</div>
     </div>
 </div>
 
 <script>
-//mostra lista utenti in pagina amministratore
-function getUserList(){
-    xhr.open("GET", "http://127.0.0.1:8000/api/users-list/");
-    xhr.setRequestHeader("Authorization","Token "+get_cookie("token"))
-    xhr.send();
-    xhr.onreadystatechange = function(){
-        response = JSON.parse(tokenRequest.responseText);
-        $(response).each(function(i){
-            console.log(response[i]['id'])
-            console.log(response[i]['username'])
-            console.log(response[i]['email'])
-        })
-    }
-}
+    var user = null;
+    getLoggedUser(function(result){
+        //se l'utente non è un manager, ritorna alla schermata di login
+        if(result['id'] === '' || result['is_admin'] == false){
+            window.location.href = 'http://127.0.0.1:8000/login';
+        }
+        user = result;
+        getUserList();
+    });
 
-//elimina un utente
-function removeUser(id){
-    xhr = new XMLHttpRequest();
-    xhr.open("DELETE", "http://127.0.0.1:8000/api/user/"+id)
-    xhr.setRequestHeader("Authorization","Token "+get_cookie("token"))
-    xhr.send()
+    //mostra lista utenti in pagina amministratore
+    function getUserList(){
+        xhr = new XMLHttpRequest();
+        xhr.open("GET", "http://127.0.0.1:8000/api/user-list/");
+        xhr.setRequestHeader("Authorization","Token "+get_cookie("token"))
+        xhr.send();
+        xhr.onreadystatechange = function(){
+            if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
+                response = JSON.parse(xhr.responseText);
+                $(response).each(function(i){
+                    // non mostrare l'utente attuale nella lista
+                    if(response[i]['id'] !== user['id'] ){
+                        //se mostra un manager, non carica il pulsante di promozione
+                        if(response[i]['is_admin']){
+                            $("#user_list").append(`
+                            <div class = "row p-2 border-bottom border-secondary">
+                                <div class = "col-1 h5 align-middle">${response[i]['id']}</div>
+                                <div class = "col-2 align-middle">${response[i]['username']}</div>
+                                <div class = "col-2 align-middle">${response[i]['email']}</div>
+                                <div class = "col-1 align-middle text-success">${response[i]['is_admin']}</div>
+                                <div class = "col-1"></div>
+                                <button class = "col-1 btn btn-success">Orders</button>
+                                <div class = "col-1"></div>
+                            </div>
+                        `);
+                        }
+                        else{
+                            $("#user_list").append(`
+                            <div class = "row p-2 border-bottom border-secondary">
+                                <div class = "col-1 h5 align-middle">${response[i]['id']}</div>
+                                <div class = "col-2 align-middle">${response[i]['username']}</div>
+                                <div class = "col-2 align-middle">${response[i]['email']}</div>
+                                <div id = "admin_field" class = "col-1 align-middle">${response[i]['is_admin']}</div>
+                                <div class = "col-1"></div>
+                                <button class = "col-1 btn btn-success">Orders</button>
+                                <div class = "col-1"></div>
+                                <button class = "col-1 btn btn-primary" onclick="promoteUser(${response[i]['id']})">Promote</button>    
+                                <div class = "col-1"></div>
+                                <button class = "col-1 btn btn-danger" onclick="removeUser(${response[i]['id']})">Delete</button>
+                            </div>
+                        `);
+                        }
+                    }
+                });
+            }
+        }
+    }
+
+    //elimina un utente
+    function removeUser(id){
+        xhr = new XMLHttpRequest();
+        xhr.open("DELETE", "http://127.0.0.1:8000/api/user-detail/"+id+"/")
+        xhr.setRequestHeader("Authorization","Token "+get_cookie("token"))
+        xhr.send()
+        xhr.onreadystatechange = function(){
+            if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 204){
+                window.location.href = "http://127.0.0.1:8000/manager/user-list/"
+            }
+        }
+    }
+
+    //promuovi un utente a manager
+    function promoteUser(id){
+        xhr = new XMLHttpRequest();
+        xhr.open("PATCH", "http://127.0.0.1:8000/api/user-detail/"+id+"/");
+        xhr.setRequestHeader("Authorization","Token "+get_cookie("token"));
+        xhr.setRequestHeader("content-type","application/json")
+        xhr.send(JSON.stringify(
+            {
+                "is_admin": true
+            }
+        ));
+        xhr.onreadystatechange = function(){
+            if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 204){
+                window.location.href = "http://127.0.0.1:8000/manager/user-list/"
+            }
+        }
+    }
+
+    //stessa presente in functions.js
+    function getLoggedUser(callback){
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", 'http://127.0.0.1:8000/api/get-logged-user/');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Authorization', 'Token '+get_cookie('token'));
+    xhr.send();
+
     xhr.onreadystatechange = function(){
-        if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 204){
-            window.location.href = "http://127.0.0.1:8000/admin/user-list"
+        if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
+            var response = xhr.responseText;
+            response = JSON.parse(response);
+            callback(response);
         }
     }
 }

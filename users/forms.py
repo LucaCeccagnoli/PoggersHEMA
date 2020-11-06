@@ -26,6 +26,6 @@ class ChangeEmailForm(forms.Form):
     email = forms.EmailField(label = 'new email')
 
 class ChangePasswordForm(forms.Form):
-    password_current = forms.CharField(widget = forms.PasswordInput())
-    password_new = forms.CharField(widget = forms.PasswordInput())
-    password_info = forms.CharField(widget = forms.PasswordInput())
+    current_password = forms.CharField(widget = forms.PasswordInput(), label = "old password")
+    new_password = forms.CharField(widget = forms.PasswordInput(), label = "new password")
+    confirm_password = forms.CharField(widget = forms.PasswordInput(), label = "confirm new password")

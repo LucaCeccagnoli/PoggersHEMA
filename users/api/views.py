@@ -30,12 +30,29 @@ class CurrentUserAPIView(APIView):
         serializer = UserDisplaySerializer(request.user)
         return Response(serializer.data)    
 
+# ottieni e modifica dati di un utente
+# solo per manager/amministratori
+class UserDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = CustomUser.objects.all()
+    permission_classes = [permissions.IsAuthenticated ,permissions.IsAdminUser]
+    serializer_class = UserDisplaySerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+
+    def patch(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
+
+
 # lista di tutti gli utenti
 # solo admin
 class UserListAPIView(generics.ListAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = UserListSerializer
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [isManagerUser]
 
 
 @api_view(['POST',])
@@ -59,17 +76,22 @@ def registration_view(request):
 
     return JsonResponse(context)
 
+@permission_classes([IsAuthenticated])
 def  get_logged_user_view(request):
     if request.method == 'GET':
         print(request.user)
         message = {}
         if request.user.is_authenticated:
             message["user"] = request.user.username
+            message['email'] = request.user.email
             message["id"] = request.user.id
+            message["admin"] = request.user.is_admin
             message["token"] = str(Token.objects.get(user_id = request.user.id))
         else:
             message["user"] = ""
+            message['email'] = ""
             message["id"] = ""
+            message["admin"] = False
             message["token"] = ""
             print("utente non autenticato")
         
@@ -80,30 +102,35 @@ def  get_logged_user_view(request):
 def change_credentials(request):
     if request.method == "POST":
         #ottieni l'utente
-        print(request.user)
         errors = {}
-        user = Users.objects.filter(id_exact = request.user).get()
+        user = CustomUser.objects.filter(id__exact = request.user.id).get()
         #cambio username
         if 'username' in request.data:
-            if not Users.objects.filter(username__exact = username):
+            # se lo stesso username non è già presente
+            if not CustomUser.objects.filter(username__exact = request.data['username']):
                 user.username = request.data['username']
+                user.save()
             else:
                 errors["username"] = "this username already exists"
         #cambio email
         if 'email' in request.data:
-            if not User.objects.filter(email__exact = email):
+            # se la stessa email non è già presente
+            if not CustomUser.objects.filter(email__exact = request.data['email']):
                 user.email = request.data['email']
+                user.save()
             else:
                 errors["email"] = "this email already exists"
 
         #cambio password
-        if 'password' in request.data:
+        if 'password_new' in request.data:
             # se la password attuale è corretta, assegna la nuova, altrimenti ritorna errore
-            if request.data['password_current'] == user.password:
-                    user.password = request.data['password_new']
+            if user.check_password(request.data['password_current']):
+                user.set_password(request.data['password_new'])
+                user.save()
             else:
                 errors['password'] = 'you current password doesn\' t match'
 
+        print(errors)
         return JsonResponse(errors)
             
 

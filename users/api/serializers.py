@@ -6,18 +6,22 @@ from articles.api.serializers import ArticleDetailSerializer
 class UserDisplaySerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = [  "username",
-                    "email",
+        fields = [  
                     "id",
+                    "username",
+                    "email",
+                    "is_admin",
                 ]  
 
 # mostra lista degli utenti
 class UserListSerializer( serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = [  "username",
-                    "email",
+        fields = [      
                     "id",
+                    "username",
+                    "email",
+                    "is_admin"
                 ] 
 
 # registrazione utente

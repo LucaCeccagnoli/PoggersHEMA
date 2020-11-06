@@ -25,3 +25,16 @@ Authorization: Token 89fb6b94f47bb169e21d1ef6ab64cf398445e196
 ### order item detail
 GET http://127.0.0.1:8000/api/user-list/ HTTP/1.1
 Authorization: Token 89fb6b94f47bb169e21d1ef6ab64cf398445e196
+
+### order item detail
+GET http://127.0.0.1:8000/api/user-detail/18 HTTP/1.1
+Authorization: Token 89fb6b94f47bb169e21d1ef6ab64cf398445e196
+
+### user get/patch/delete
+PATCH http://127.0.0.1:8000/api/user-detail/5/ HTTP/1.1
+Authorization: Token 89fb6b94f47bb169e21d1ef6ab64cf398445e196
+content-type: application/json
+
+{
+    "is_admin": true
+}

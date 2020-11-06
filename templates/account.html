@@ -3,57 +3,92 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div class="container border-bottom border-primary">
-	<form id="username_form">
+<div class="container border-bottom border-primary pt-3 pb-3">
+    <h2>Your Account</h2>
+    <br>
+    <h5>Current Username: <b id = "username"></b></h5>
+    <p id = "username_errors" class = "text-danger"></p>
+	<form id="username_form" method = "POST">
 		{% csrf_token %}
 		{{ username_form|crispy }}
-		<div class="form-group col-md-6">
-			<input type="submit" class="btn btn-primary" value="Change Username"></input>
-		</div>
+        <input type="submit" class="btn btn-primary" value="Change Username"></input>
 	</form>
 </div>
-<div class="container border-bottom border-primary">
-	<form id="password_form">
-		{% csrf_token %}
-		{{ password_form|crispy }}
-		<div class="form-group col-md-6">
-			<input type="submit" class="btn btn-primary" value="Change Password"></input>
-		</div>
-	</form>
-</div>
-<div class="container border-bottom border-primary">
-	<form id="email_form">
+<div class="container border-bottom border-primary pt-2 pb-3">
+    <h5>Current Email: <b id = "email"></b></h5>
+    <p id = "email_errors" class = "text-danger"></p>
+	<form id="email_form" method = "POST">
 		{% csrf_token %}
 		{{ email_form|crispy }}
-		<div class="form-group col-md-6">
-			<input type="submit" class="btn btn-primary" value="Change Email"></input>
-		</div>
+        <input type="submit" class="btn btn-primary" value="Change Email"></input>
 	</form>
 </div>
-{% endblock content %}
+<div class="container border-bottom border-primary pt-3 pb-3">
+    <p id = "password_errors" class = "text-danger"></p>
+	<form id="password_form" method = "POST">
+		{% csrf_token %}
+		{{ password_form|crispy }}
+		<input type="submit" class="btn btn-primary" value="Change Password"></input>
+	</form>
+</div>
+<br>
+<div id = "admin" class = "container">
+    <h2 id = "admin">Manager Panel</h2>
+    <br>
+    <div class = "row container">
+        <a  id = "admin" class = "btn btn-info col-3" href = "http://127.0.0.1:8000/manager/user-list/">List of Users</a>
+        <div class = "col-2"></div>
+        <a  id = "admin" class = "btn btn-info col-3" href = "http://127.0.0.1:8000/manager/">List of Orders</a>
+    </div>
+</div>
 
 <script>
-	// form cambio username
+// nascondi manager panel 
+$("#admin").hide();
+
+// mostra nome utente e password, mostra il manager panel ai manager
+var user = get_logged_user(function(result){
+    $("#username").html(`  ${result['user']}`);
+    $("#email").html(`  ${result['email']}`);
+    if(result['admin']){
+        $("#admin").show();
+    }
+    else{
+        console.log(result['admin']);
+    }
+    return result;
+});
+
+// form cambio username
 $("#username_form").on('submit', (e) =>{ 
+    var xhr = new XMLHttpRequest();
     e.preventDefault();
-    xhr.open("POST", "http://127.0.0.1:8000/api/change_credentials/");
+    xhr.open("POST", "http://127.0.0.1:8000/api/change-credentials/");
     xhr.setRequestHeader("content-type","application/json")
     xhr.setRequestHeader("Authorization","Token "+get_cookie("token"))
+    console.log(document.getElementById("id_username").value);
     xhr.send(JSON.stringify(
         {
             "username": document.getElementById("id_username").value,
         }
     ));
     xhr.onreadystatechange = function(){
-        response = JSON.parse(tokenRequest.responseText);
-        $("#errors").html(response['username'])
+        if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
+            errors = JSON.parse(xhr.responseText)
+            if(errors == {}){
+                $("#username_errors").html(errors['username'])
+            }else{
+                window.location.href = "http://127.0.0.1:8000/account/";
+            }
+        }
     }
 });
 
 // form cambio email
 $("#email_form").on('submit', (e) =>{ 
     e.preventDefault();
-    xhr.open("POST", "http://127.0.0.1:8000/api/change_credentials/");
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "http://127.0.0.1:8000/api/change-credentials/");
     xhr.setRequestHeader("content-type","application/json")
     xhr.setRequestHeader("Authorization","Token "+get_cookie("token"))
     xhr.send(JSON.stringify(
@@ -62,34 +97,49 @@ $("#email_form").on('submit', (e) =>{
         }
     ));
     xhr.onreadystatechange = function(){
-        response = JSON.parse(tokenRequest.responseText);
-        $("#errors").html(response['email'])
+        if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
+            errors = JSON.parse(xhr.responseText)
+            if(errors == {}){
+                $("#email_errors").html(errors['email'])
+            }else{
+                window.location.href = "http://127.0.0.1:8000/api/account/";
+            }
+        }
     }
 });
 
 // form cambio email
 $("#password_form").on('submit', (e) =>{ 
     e.preventDefault();
-    var pw_current = document.getElementById("id_password_current").value;
-    var pw_new = document.getElementById("id_password_new").value;
-    var pw_confirm = document.getElementById("id_password_old").value;
+    var xhr = new XMLHttpRequest();
+    var pw_current = document.getElementById("id_current_password").value;
+    var pw_new = document.getElementById("id_new_password").value;
+    var pw_confirm = document.getElementById("id_confirm_password").value;
 
     if(pw_new === pw_confirm){
-        xhr.open("POST", "http://127.0.0.1:8000/api/change_credentials/");
+        xhr.open("POST", "http://127.0.0.1:8000/api/change-credentials/");
         xhr.setRequestHeader("content-type","application/json")
         xhr.setRequestHeader("Authorization","Token "+get_cookie("token"))
         xhr.send(JSON.stringify(
             {
-                "password_current": pw_cur,
+                "password_current": pw_current,
                 "password_new": pw_new
             }
         ));
         xhr.onreadystatechange = function(){
-            response = JSON.parse(tokenRequest.responseText);
-            $("#errors").html(response['password'])
+            if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
+                errors = JSON.parse(xhr.responseText)
+                if(errors == {}){
+                    $("#password_errors").html(errors['password'])
+                }else{
+                    window.location.href = "http://127.0.0.1:8000/account/";
+                }
+            }
         }
     }else{
-        $("#errors").html("the two new passwords don't match")
+        $("#password_errors").html("the two new passwords don't match")
     }
 });
 </script>
+
+{% endblock content %}
