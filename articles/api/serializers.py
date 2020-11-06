@@ -13,7 +13,7 @@ class ArticleListSerializer(serializers.ModelSerializer):
                     "stock",
                     "category",
                     "sub_category",
-                ]  
+                ]
 
 # dati aggiuntivi mostrati sul dettaglio di un articolo
 class ArticleDetailSerializer(serializers.ModelSerializer):
@@ -25,7 +25,7 @@ class ArticleDetailSerializer(serializers.ModelSerializer):
                     "material",
                     "price",
                     "stock",
-                ]  
+                ]
 
 # mostra lista degli ordini
 class OrderListSerializer(serializers.ModelSerializer):
@@ -54,4 +54,7 @@ class OrderItemListSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-
+class ShipmentsListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Shipment
+        fields = "__all__"

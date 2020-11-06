@@ -37,22 +37,24 @@ urlpatterns = [
     path("registration/", RegistrationView.as_view()),          # registrazione
     path("login/", LoginView.as_view()),                        # login
     path("shopping-cart/", ShoppingCartView.as_view()),         # ordini
-    
+
     path("account/", ChangeCredentialsView.as_view(), name = "account"),  # cambio username e email
 
     #pagine per gestori del sito
     path('manager/user-list/', ManagerUserListView.as_view()),
-    
+    path("shipments/", ShipmentsListView.as_view()),
+    path("shipments_detail/", ShipmentsDetailView.as_view()),
+
     # api
-    path('api/', include("users.api.urls")),                    
+    path('api/', include("users.api.urls")),
     path('api/', include("articles.api.urls")),
 
     # rest auth fornisce url per automatizzare l'autenticazione
     # api/rest-auth/login/ autentica l'utente con token e ne effettua il login
-    path('api/rest-auth/', include("rest_auth.urls")), 
+    path('api/rest-auth/', include("rest_auth.urls")),
 
     #login da browsable-api
-    path('api-auth/', include("rest_framework.urls")), 
+    path('api-auth/', include("rest_framework.urls")),
 
     #homepage
     #re_path(r"^.*$", IndexTemplateView.as_view(), name = "entry-point"),

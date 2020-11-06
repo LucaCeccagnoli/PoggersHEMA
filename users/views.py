@@ -24,7 +24,7 @@ class LoginView(View):
             "form": form
         }
         return render(request, "login.html", context)
-    
+
     def post(self, request):
         return HttpResponseRedirect("/login/")
 
@@ -60,3 +60,11 @@ class ChangeCredentialsView(View):
 class ManagerUserListView(View):
     def get(self, request):
         return render (request, "user-list.html")
+
+class ShipmentsListView(View):
+    def get(self, request):
+        return render(request, "shipments.html")
+
+class ShipmentsDetailView(View):
+    def get(self, request):
+        return render(request, "shipments_detail.html")

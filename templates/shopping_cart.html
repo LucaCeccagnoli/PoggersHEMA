@@ -13,14 +13,14 @@
     <div class = "row container">
         <h2 class = "col-sm" id = "title">Your Shopping Cart</h2>
         <p class = "col-sm text-danger" id = "messages"></p>
-    </div>  
+    </div>
     <div class="container">
             <div class="row">
                 <div class="col-sm">
                     <!-- cards articoli -->
-                    <div  class="   container 
+                    <div  class="   container
                                     container-border
-                                    "> 
+                                    ">
                     <!-- DECK CARTE -->
                     <div class="row"
                         id="container-carte">
@@ -34,7 +34,7 @@
                 <hr>
                 <h5 id = "total_price"></h5>
                 <form id = "order_form" method="post" action = "http://127.0.0.1:8000/shopping-cart/">
-                    {% csrf_token %}    
+                    {% csrf_token %}
                     {{ form|crispy }}
                     <input class = "btn btn-success" type="submit" value="Confirm Order">
                 </form>
@@ -65,7 +65,7 @@
                     response = JSON.parse(xhr.responseText);
                     $.each(response, function(i){
                         addItemCard(response[i], response[i]['article']);
-                        items.push({"id":response[i]['id'], 
+                        items.push({"id":response[i]['id'],
                                     "amount":response[i]['amount'],
                                     "price":response[i]['article']['price']});
                         console.log(items);
@@ -77,12 +77,12 @@
                     console.log(total_price);
                     $("#item_price").html("Item Price: "+ String(item_price) + " €");
                     $("#total_price").html("Total Price: "+ String(total_price)+ " €");
-                }	
+                }
             }
         });
 
         // form conferma ordine
-        $("#order_form").on('submit', (e) =>{ 
+        $("#order_form").on('submit', (e) =>{
             e.preventDefault();
             //se non ci sono oggetti, riporta errore
             if(items.length < 1){
@@ -92,7 +92,7 @@
                 var number = document.getElementById("id_cc_number").value;
                 var expiry = document.getElementById("id_cc_expiry").value;
                 var code = document.getElementById("id_cc_code").value;
-                var address = document.getElementById("aid_address").value;
+                var address = document.getElementById("id_address").value;
                 console.log(address)
                 console.log(number)
                 //trova il carrello dell'utente, imposta l'ordine a "ordinato" e crea uno shipment
@@ -121,7 +121,7 @@
         function get_total_price(){
             var total_price = 0;
             $.each(items, function(i){
-                total_price += items[i]["price"] * items[i]["amount"]; 
+                total_price += items[i]["price"] * items[i]["amount"];
             });
             return total_price
         }
@@ -157,7 +157,7 @@
                 }
             }
         }
-        
+
 
     </script>
 {% endblock content %}

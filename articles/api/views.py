@@ -60,7 +60,7 @@ class OrderItemDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 
 class AddItemAPIView(APIView):
     def post(self, request):
-        # messaggi da riportare al client 
+        # messaggi da riportare al client
         response = {}
         token =  Token.objects.get(key = request.data['token'])
         user = CustomUser.objects.get(id = token.user.id)
@@ -98,7 +98,7 @@ class AddItemAPIView(APIView):
                     item.save()
             # se l'articolo viene aggiunto per la prima volta
             else:
-                try:    
+                try:
                     print("id carrello: ", cart.owner.username)
                     item = OrderItem(article = Article.objects.get(pk = request.data['pk']), order = cart)
                     item.save()
@@ -153,11 +153,12 @@ class ConfirmOrderAPIView(generics.GenericAPIView):
 
 # ottieni lista shipment totali o per singolo utente
 class ShipmentListAPIView(generics.ListAPIView):
+    serializer_class = ShipmentsListSerializer
     queryset = Shipment.objects.all()
     permission_classes = []
 
     def get(self, request, *args, **kwargs):
-        if(kwargs['pk']):
+        if 'pk' in kwargs:
             self.queryset = Shipment.objects.filter(order__owner__exact = kwargs['pk'])
             return self.list(request, *args, **kwargs)
         else:
@@ -173,7 +174,7 @@ class ShipmentDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 #         article = get_object_or_404(Article, pk = pk)
 #         return article
 
-#     # ottiene dati su un singolo articolo    
+#     # ottiene dati su un singolo articolo
 #     def get(self, request, pk):
 #         article = self.get_object(pk)
 #         serializer = ArticleDetailSerializer(article)
@@ -191,7 +192,7 @@ class ShipmentDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 #         else:
 #             return Response(status = status.HTTP_403_FORBIDDEN)
 
-# class ArticleDetailAPIView(generics.GenericAPIView, 
+# class ArticleDetailAPIView(generics.GenericAPIView,
 #                             mixins.RetrieveModelMixin,
 #                             mixins.UpdateModelMixin,
 #                             mixins.DestroyModelMixin):
@@ -222,7 +223,7 @@ class ShipmentDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 #         serializer = ArticleListSerializer(articles, many = True)
 #         return Response(serializer.data)
 
-    
+
 def generate_ref_code():
     code = ''
     for i in range(15):
