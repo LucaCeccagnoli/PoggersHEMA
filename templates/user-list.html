@@ -97,7 +97,7 @@
             }
         ));
         xhr.onreadystatechange = function(){
-            if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 204){
+            if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
                 window.location.href = "http://127.0.0.1:8000/manager/user-list/"
             }
         }

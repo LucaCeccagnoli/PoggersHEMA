@@ -151,6 +151,21 @@ class ConfirmOrderAPIView(generics.GenericAPIView):
         shipment.save()
         return JsonResponse(messages)
 
+# ottieni lista shipment totali o per singolo utente
+class ShipmentListAPIView(generics.ListAPIView):
+    queryset = Shipment.objects.all()
+    permission_classes = []
+
+    def get(self, request, *args, **kwargs):
+        if(kwargs['pk']):
+            self.queryset = Shipment.objects.filter(order__owner__exact = kwargs['pk'])
+            return self.list(request, *args, **kwargs)
+        else:
+            return self.list(request, *args, **kwargs)
+
+# dettagli singolo shipment
+class ShipmentDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Shipment.objects.all()
 
 
 # class ArticleDetailAPIView(APIView):
