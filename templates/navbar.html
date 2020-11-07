@@ -50,65 +50,10 @@
         </div>
     </nav>
 
-    <!-- dropdown categorie -->
-    <nav class="navbar navbar-expand-sm navbar-dark" style="background-color:#434952; padding-top: 0px; padding-bottom: 0px;">
-      <div class="navbar-brand">Categorie:</div>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Simulators
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="?category=simulator&sub_category=sword1h">One Handed Swords</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="?category=simulator&sub_category=sword2h">Two Handed Swords</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="?category=simulator&sub_category=axe">Axes</a>              
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="?category=simulator&sub_category=polearms">Polearms</a>
-            </div>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Protections
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="?category=protections&sub_category=head">Head</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="?category=protections&sub_category=torso">Torso</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="?category=protections&sub_category=hands">Hands</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="?category=protections&sub_category=legs">Legs</a>
-              <div class="dropdown-divider"></div>
-            </div>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Shields
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="?category=shield&sub_category=buckler">Bucklers</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="?category=shield&sub_category=targes">Targes</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="?category=shield&sub_category=rotella">Rotellas</a>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </nav>
-
-    <p>{{ registration }}</p>
-
     {% block content %}
 
     {% endblock %}
+    <p>{{ registration }}</p>
     <ul id = "item-list">
 
     </ul>

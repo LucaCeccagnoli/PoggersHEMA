@@ -5,20 +5,6 @@ function get_jQuery(){
     document.head.appendChild(jQueryScript)
 }
 
-// ottiene articoli con chiamata rest
-function getArticles(url){
-    xhr = new XMLHttpRequest();
-    xhr.open("GET", url);
-    xhr.send();
-    xhr.onreadystatechange = function(){
-        if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
-            response = JSON.parse(xhr.responseText);
-            console.log(response);
-            $.each(response, function(i){addCard(response[i])});
-        }
-    }
-}
-
 // mostra la carta di un articolo
 function addCard(item){
     var src = "falchion.jpg"//article['image'];

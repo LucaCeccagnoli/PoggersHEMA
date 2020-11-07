@@ -1,0 +1,70 @@
+<nav class="navbar navbar-expand-sm navbar-dark" style="background-color:#434952; padding-top: 0px; padding-bottom: 0px;">
+        <div class="navbar-brand">Categorie:</div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+  
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Simulators
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="?category=simulator&sub_category=sword1h">One Handed Swords</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="?category=simulator&sub_category=sword2h">Two Handed Swords</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="?category=simulator&sub_category=axe">Axes</a>              
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="?category=simulator&sub_category=polearms">Polearms</a>
+              </div>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Protections
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="?category=protections&sub_category=head">Head</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="?category=protections&sub_category=torso">Torso</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="?category=protections&sub_category=hands">Hands</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="?category=protections&sub_category=legs">Legs</a>
+                <div class="dropdown-divider"></div>
+              </div>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Shields
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="?category=shield&sub_category=buckler">Bucklers</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="?category=shield&sub_category=targes">Targes</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="?category=shield&sub_category=rotella">Rotellas</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <script>
+        articles_url = "http://127.0.0.1:8000/api/article-list/"
+
+        //ottieni i parametri per le categorie dall'url della pagina
+        var query_string = window.location.search;
+        const  url_params = new URLSearchParams(query_string);
+        var category =  url_params.get("category");
+        var sub_category = url_params.get("sub_category");
+
+        //se i parametri sono stati inseriti, aggiungili al percorso per ottenere gli articoli
+        if(category){
+            articles_url += category;
+        }
+        if(sub_category){
+            articles_url = articles_url + "/" + sub_category
+        }
+      </script>
