@@ -31,10 +31,30 @@ GET http://127.0.0.1:8000/api/user-detail/18 HTTP/1.1
 Authorization: Token 89fb6b94f47bb169e21d1ef6ab64cf398445e196
 
 ### user get/patch/delete
-PATCH http://127.0.0.1:8000/api/user-detail/5/ HTTP/1.1
+GET http://127.0.0.1:8000/api/user-detail/5/ HTTP/1.1
 Authorization: Token 89fb6b94f47bb169e21d1ef6ab64cf398445e196
 content-type: application/json
 
 {
     "is_admin": true
 }
+
+### create new article
+POST http://127.0.0.1:8000/api/article-detail/create/ HTTP/1.1
+Authorization: Token 89fb6b94f47bb169e21d1ef6ab64cf398445e196
+content-type: application/json
+
+{
+    "name":"tomahawk",
+    "material":"synthetic",
+    "description":"aaaaaaaaaaaaaa",
+    "category":"simulator",
+    "sub_category":"axe",
+    "price":"135.00",
+    "image":"tomahawk.jpg"
+}
+
+### article get/patch/delete
+GET http://127.0.0.1:8000/api/article-detail/18 HTTP/1.1
+Authorization: Token 89fb6b94f47bb169e21d1ef6ab64cf398445e196
+content-type: application/json

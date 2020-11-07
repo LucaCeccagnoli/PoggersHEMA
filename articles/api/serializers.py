@@ -10,9 +10,9 @@ class ArticleListSerializer(serializers.ModelSerializer):
                     "description",
                     "material",
                     "price",
-                    "stock",
                     "category",
                     "sub_category",
+                    "image",
                 ]
 
 # dati aggiuntivi mostrati sul dettaglio di un articolo
@@ -24,7 +24,9 @@ class ArticleDetailSerializer(serializers.ModelSerializer):
                     "description",
                     "material",
                     "price",
-                    "stock",
+                    "category",
+                    "sub_category",
+                    "image",
                 ]
 
 # mostra lista degli ordini

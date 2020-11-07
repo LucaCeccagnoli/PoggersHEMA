@@ -16,6 +16,8 @@ from articles.models import *
 
 import random, json
 
+# ottiene lista degli articoli, filtrando per categorie
+# get
 class ArticleListAPIView(generics.GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin):
     serializer_class = ArticleListSerializer
     permission_classes = [IsAdminUserOrReadonly]
@@ -42,11 +44,16 @@ class ArticleListAPIView(generics.GenericAPIView, mixins.ListModelMixin, mixins.
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
 
-# ottiene dettagli su un singolo articolo
-# utenti: solo richieste get
-# amministratori: richieste get, put, patch
-
+# dettagli di un singolo articolo
+# get, put / patch, delete
 class ArticleDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Article.objects.all()
+    serializer_class = ArticleDetailSerializer
+    permission_classes = [IsAdminUserOrReadonly]
+
+# creazione di un nuovo articolo
+# post
+class ArticleCreateAPIView(generics.CreateAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleDetailSerializer
     permission_classes = [IsAdminUserOrReadonly]

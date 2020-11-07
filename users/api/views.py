@@ -52,7 +52,7 @@ class UserDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 class UserListAPIView(generics.ListAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = UserListSerializer
-    permission_classes = [isManagerUser]
+    permission_classes = [IsManagerUser]
 
 
 @api_view(['POST',])

@@ -21,7 +21,7 @@ function getArticles(url){
 
 // mostra la carta di un articolo
 function addCard(item){
-    var src = "https://images-na.ssl-images-amazon.com/images/I/61dO6Tn1bKL._AC_SL1500_.jpg";
+    var src = "falchion.jpg"//article['image'];
     var textNome = item["name"];
     var textMateriale = item["material"];
     var textDesc = item["description"];
@@ -30,7 +30,7 @@ function addCard(item){
 
 
     var myCard = $(`<div class=" card card-size"> 
-                        <img class="card-img-top" src=${src}> 
+                        <img class="card-img-top" src='http://127.0.0.1:8000/static/images/${src}'> 
                         <div class="card-body"> 
                             <h5 class="card-title">${textNome} - ${textMateriale}</h5> 
                             <p class="card-text">${textDesc}</p>
@@ -49,14 +49,14 @@ function addCard(item){
 
 //mostra la carta di un OrderItem
 function addItemCard(item, article){
-    var src = "https://images-na.ssl-images-amazon.com/images/I/61dO6Tn1bKL._AC_SL1500_.jpg";
+    var src = "falchion.jpg"//article['image'];
     var textNome = article['name'];
     var textPrezzo = article['price'];
     var amount = item['amount'];
     var item_id = item['id'];
 
     var myCard = $(`<div class=" card card-size"> 
-                        <img class="card-img-top" src=${src}> 
+                        <img class="card-img-top" src='http://127.0.0.1:8000/static/images/${src}'> 
                             <div class="card-body"> 
                                 <h5 class="card-title">${textNome}</h5> 
                                 <p class="card-text">

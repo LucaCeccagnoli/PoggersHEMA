@@ -7,7 +7,8 @@ urlpatterns = [
     # articoli filtrati per categorie
     path("article-list/<str:category>", ArticleListAPIView.as_view()), 
     path("article-list/<str:category>/<str:sub_category>", ArticleListAPIView.as_view()),
-    path("article-detail/<int:pk>", ArticleDetailAPIView.as_view()),          # singolo articolo
+    path("article-detail/<int:pk>", ArticleDetailAPIView.as_view()),    # ottieni/modifica singolo articolo
+    path("article-detail/create/", ArticleCreateAPIView.as_view()),     #crea un nuovo articolo
     path("orders/", OrderListAPIView.as_view(), name = "order-list"),   # lista completa ordini
                                                                         # con chiave primaria per ottenerne un singolo
 

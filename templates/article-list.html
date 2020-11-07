@@ -1,0 +1,103 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+<style media="screen">
+        .card-size{
+          width: 15rem;
+          float: left;
+        }
+</style>
+
+<div class = "container">
+    <h2>Article List</h2>
+    <a class = "btn btn-success col-10" href="http://127.0.0.1:8000/manager/article-detail/" > Add new Article</a>
+    <div class = "row container">
+        <p class = "col-sm text-danger" id = "messages"></p>
+    </div>  
+</div>
+
+<div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <!-- cards articoli -->
+                <div  class="   container 
+                                container-border
+                                "> 
+                <!-- DECK CARTE -->
+                <div class="row"
+                    id="container-carte">
+                <!-- CARTE SINGOLE -->
+        </div>
+</div>
+<script>
+    var user = null;
+    //salva localmente informazioni sugli oggetti
+    var items = [];
+
+    //se il token è scaduto, redirigi a pagina di login
+    if(String(get_cookie('token')) === ''){
+        window.location.href = "http://127.0.0.1:8000/login/";
+    }
+
+    //carica carrello
+    get_logged_user(function(result){
+        user = result;
+        xhr = new XMLHttpRequest();
+        xhr.open("GET", "http://127.0.0.1:8000/api/article-list/");
+        xhr.setRequestHeader('Authorization', 'Token '+ String(get_cookie('token')));
+        xhr.send();
+        xhr.onreadystatechange = function(){
+            // carica carte con oggetti del carrello
+            if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
+                response = JSON.parse(xhr.responseText);
+                $.each(response, function(i){
+                    addArticleCard(response[i]);
+                    items.push(response[i]);
+                });
+            }	
+        }
+    });
+
+    function deleteArticle(id){
+        xhr = new XMLHttpRequest();
+        xhr.open("DELETE", "http://127.0.0.1:8000/api/article-detail/"+id);
+        xhr.setRequestHeader('Authorization', 'Token '+ String(get_cookie('token')));
+        xhr.send();
+        xhr.onreadystatechange = function(){
+            // carica carte con oggetti del carrello
+            if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 204){
+                window.location.href = "http://127.0.0.1:8000/manager/article-list/"
+            }	
+        }
+    }
+
+
+    function addArticleCard(article){
+        var src = article['image'];      
+        var textNome = article["name"];
+        var textMateriale = article["material"];
+        var textDesc = article["description"];
+        var textPrezzo = article["price"];
+
+
+        var myCard = $(`<div class=" card card-size"> 
+                            <img class="card-img-top" src='http://127.0.0.1:8000/static/images/${src}'> 
+                            <div class="card-body"> 
+                                <h5 class="card-title">${textNome} - ${textMateriale}</h5> 
+                                <p class="card-text">${textDesc}</p>
+                                <p> Prezzo: ${textPrezzo} €</p>
+                                <a class = "btn btn-success"
+                                        href="http://127.0.0.1:8000/manager/article-detail/${article.pk}">
+                                        Modifica
+                                </a>
+                                <button class = "btn btn-danger"
+                                        onclick = "deleteArticle(${article.pk})"
+                                        style = "float: right;">
+                                        Elimina
+                                </button>
+                            </div>
+                        </div>`);
+        myCard.appendTo('#container-carte');
+    }
+</script>
+{% endblock content %}

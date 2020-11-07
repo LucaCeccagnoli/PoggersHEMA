@@ -1,0 +1,118 @@
+{% extends 'auth_layout.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class = "container">
+    <h2>Add a new article</h2>
+    <form id = "add_form" method = "POST">
+        {% csrf_token %}    
+        {{ form|crispy }}
+
+        {{ pk|json_script:"article_pk"}}    <!-- se l'url contiene chiave primaria, la ottiene in questo modo-->
+        <input class = "btn btn-primary" id = "add" type="submit" value="Add Item">
+        <input class = "btn btn-primary" id = "change" type="submit" value="Change Item">
+    </form>
+</div>
+<br>
+<p class = "container">
+    <a href = "http://127.0.0.1:8000/manager/article-list/">Go Back</a>
+</p>
+<script>
+    //nascondi pulsanti submit
+    $("#add").hide();
+    $("#change").hide();
+
+    //ottiene chiave primaria dell'articolo passato tramite template
+    var article_pk = JSON.parse(document.getElementById('article_pk').textContent);
+    console.log(article_pk)
+
+    //se la chiave primaria è vuota si sta aggiungendo un nuovo articolo, altrimenti se ne sta modificando uno
+    //se non è vuota, carica nel form i valori già presenti con una richiesta get alla API
+    if(article_pk){
+        //mostra pulsante change
+        $("#change").show();
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "http://127.0.0.1:8000/api/article-detail/"+article_pk);
+        xhr.setRequestHeader("content-type","application/json")
+        xhr.setRequestHeader('Authorization', 'Token '+ String(get_cookie('token')));
+        xhr.send()
+        xhr.onreadystatechange = function(){
+            if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
+                //ottenuti i dati dell'articolo, scrivi i loro valori sul form
+                response = JSON.parse(xhr.responseText)
+                $("#id_name").val(response['name']);
+                $("#id_material").val(response['material']);
+                $("#id_description").val(response['description']);
+                $("#id_category").val(response['category']);
+                $("#id_sub_category").val(response['sub_category']);
+                $("#id_price").val(response['price']);
+                $("#id_image").val(response['image']);
+            }
+        }
+    }
+    else{
+        $("#add").show();
+    }
+
+    //submit del form
+    $("#add_form").on('submit', (e) =>{ 
+        e.preventDefault();
+        // modifica di un articolo con patch
+        if(article_pk){
+            xhr = new XMLHttpRequest();
+            xhr.open("PATCH", "http://127.0.0.1:8000/api/article-detail/"+article_pk);
+            xhr.setRequestHeader("content-type","application/json")
+            xhr.setRequestHeader('Authorization', 'Token '+ String(get_cookie('token')));
+            xhr.send(JSON.stringify(
+                {
+                    "name": $("#id_name").val(),
+                    "material": $("#id_material").val(),
+                    "description": $("#id_description").val(),
+                    "category": $("#id_category").val(),
+                    "sub_category": $("#id_sub_category").val(),
+                    "price": $("#id_price").val(),
+                    "image": $("#id_image").val()
+                }));
+            xhr.onreadystatechange = function(){
+                // risposta 200: reindirizza alla lista articoli
+                if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
+                    window.location.href = "http://127.0.0.1:8000/manager/article-list/";
+                }
+                // risposta 401: reindirzza a login
+                else if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 401){
+                    window.location.href = "http://127.0.0.1:8000/manager/article-list/";
+                }	
+            }
+        }
+        //aggiunta di un nuovo articolo
+        else{
+            xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://127.0.0.1:8000/api/article-detail/create/");
+            xhr.setRequestHeader("content-type","application/json")
+            xhr.setRequestHeader('Authorization', 'Token '+ String(get_cookie('token')));
+            xhr.send(JSON.stringify(
+                {
+                    "name": $("#id_name").val(),
+                    "material": $("#id_material").val(),
+                    "description": $("#id_description").val(),
+                    "category": $("#id_category").val(),
+                    "sub_category": $("#id_sub_category").val(),
+                    "price": $("#id_price").val(),
+                    "image": $("#id_image").val()
+                }
+            ));
+            xhr.onreadystatechange = function(){
+                // risposta 200: reindirizza alla lista articoli
+                if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 201){
+                    window.location.href = "http://127.0.0.1:8000/manager/article-list/";
+                }
+                // risposta 401: reindirzza a login
+                else if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 401){
+                    window.location.href = "http://127.0.0.1:8000/manager/article-list/";
+                }	
+            }
+        }   
+    });
+</script>
+
+{% endblock content %}

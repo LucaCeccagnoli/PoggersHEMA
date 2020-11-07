@@ -29,3 +29,12 @@ class ChangePasswordForm(forms.Form):
     current_password = forms.CharField(widget = forms.PasswordInput(), label = "old password")
     new_password = forms.CharField(widget = forms.PasswordInput(), label = "new password")
     confirm_password = forms.CharField(widget = forms.PasswordInput(), label = "confirm new password")
+
+class ArticleForm(forms.Form):
+    name = forms.CharField(max_length = 20, label = "name", required = True)
+    material = forms.CharField(max_length = 20, label = "material", required = True)
+    description = forms.CharField(widget = forms.Textarea, max_length = 255)
+    category = forms.CharField(max_length = 20, label = "category")
+    sub_category = forms.CharField(max_length = 20, label = "sub category")
+    price = forms.DecimalField(max_digits = 5, decimal_places = 2, required = True)
+    image = forms.CharField(max_length = 50, required = True, label = "image (Path)")

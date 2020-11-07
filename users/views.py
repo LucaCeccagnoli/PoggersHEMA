@@ -2,8 +2,10 @@ from django.views import View
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from rest_framework import generics, mixins, permissions
 from users.models import CustomUser
 from users.forms import *
+from users.api.permissions import *
 
 # Create your views here.
 class RegistrationView(View):
@@ -68,3 +70,20 @@ class ShipmentsListView(View):
 class ShipmentsDetailView(View):
     def get(self, request):
         return render(request, "shipments_detail.html")
+
+class ManagerArticleListView(View):
+    permission_classes = [permissions.IsAuthenticated, IsManagerUser]
+    def get(self, request):
+        return render(request, "article-list.html")
+
+class ManagerArticleDetailView(View):
+    def get(self, request, *args, **kwargs):
+        form = ArticleForm()
+        context = {
+            "form" :  form
+        }	
+        if 'pk' in kwargs:
+            context['pk'] = kwargs['pk']
+
+        print(context)
+        return render (request, "article-detail.html", context)
