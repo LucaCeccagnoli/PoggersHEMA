@@ -38,14 +38,14 @@
     <div class = "row container">
         <a  id = "admin" class = "btn btn-info col-3" href = "http://127.0.0.1:8000/manager/user-list/">List of Users</a>
         <div class = "col-1"></div>
-        <a  id = "admin" class = "btn btn-info col-3" href = "http://127.0.0.1:8000/manager/">List of Orders</a>
+        <a  id = "admin" class = "btn btn-info col-3" href = "http://127.0.0.1:8000/shipments">List of Orders</a>
         <div class = "col-1"></div>
         <a  id = "admin" class = "btn btn-info col-3" href = "http://127.0.0.1:8000/manager/article-list/">Article Editor</a>
     </div>
 </div>
 
 <script>
-// nascondi manager panel 
+// nascondi manager panel
 $("#admin").hide();
 
 // mostra nome utente e password, mostra il manager panel ai manager
@@ -62,7 +62,7 @@ var user = get_logged_user(function(result){
 });
 
 // form cambio username
-$("#username_form").on('submit', (e) =>{ 
+$("#username_form").on('submit', (e) =>{
     var xhr = new XMLHttpRequest();
     e.preventDefault();
     xhr.open("POST", "http://127.0.0.1:8000/api/change-credentials/");
@@ -87,7 +87,7 @@ $("#username_form").on('submit', (e) =>{
 });
 
 // form cambio email
-$("#email_form").on('submit', (e) =>{ 
+$("#email_form").on('submit', (e) =>{
     e.preventDefault();
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "http://127.0.0.1:8000/api/change-credentials/");
@@ -111,7 +111,7 @@ $("#email_form").on('submit', (e) =>{
 });
 
 // form cambio email
-$("#password_form").on('submit', (e) =>{ 
+$("#password_form").on('submit', (e) =>{
     e.preventDefault();
     var xhr = new XMLHttpRequest();
     var pw_current = document.getElementById("id_current_password").value;

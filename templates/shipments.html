@@ -3,12 +3,23 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-
-
-<div id="div-shipments"></div>
+<div class="container border-bottom border-secondary h1 p-1" style="width:60%">
+  Elenco Shipments
+</div>
+<div class="container" style="width:60%">
+  <div class="row border-bottom border-secondary">
+    <div class = "col h3" >Indirizzo</div>
+    <div class = "col h3">Data Ordine</div>
+    <div class = "col h3">Id Ordine</div>
+  </div>
+  <div id="div-shipments">
+  </div>
+</div>
+</div>
 
 <script type="text/javascript">
   var xhr = new XMLHttpRequest();
+  var xhrOrder = new XMLHttpRequest();
   xhr.open("GET", "http://127.0.0.1:8000/api/shipment-list");
   xhr.setRequestHeader('Authorization', 'Token '+ String(get_cookie('token')));
   xhr.send();
@@ -23,22 +34,20 @@
   }
 
   function printShipments(item){
-      var textId = item["id"];
       var textShipping_address = item["shipping_address"];
       var textDate = item["date"];
       var textOrder = item["order"];
 
 
-      var myShipment = $(`<div>
-        ${textId} - ${textShipping_address} - [${textDate}] - ${textOrder}
-        <button>Change Order</button> | <button>Delete Order</button>
+      var myShipment = $(`
+      <div class = "row p-2 border-bottom border-secondary">
+          <div class = "col align-middle">${textShipping_address}</div>
+          <div class = "col align-middle">[${textDate}]</div>
+          <div class = "col align-middle">${textOrder}</div>
       </div>`);
       myShipment.appendTo('#div-shipments');
   }
 
 </script>
-
-
-
 
 {% endblock content %}
