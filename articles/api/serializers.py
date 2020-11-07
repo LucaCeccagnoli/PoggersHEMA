@@ -57,6 +57,7 @@ class OrderItemListSerializer(serializers.ModelSerializer):
 
 
 class ShipmentsListSerializer(serializers.ModelSerializer):
+    order = OrderDetailSerializer(read_only=True)
     class Meta:
         model = Shipment
         fields = "__all__"
