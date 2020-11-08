@@ -95,10 +95,8 @@ class AddItemAPIView(APIView):
                 # incrementa il count dell'order item
                 item = duplicate_item_query.get()   # ottiene l'item trovato dalla query)
 
-                # OPZIONALE: riduci stock amount ( ? )
-                print(item.article.stock)
-                if(item.amount >= 9 or item.amount > item.article.stock - 1):
-                    response['error'] = "You can't order more items of this article"
+                if(item.amount >= 9):
+                    response['error'] = "You can't order more copies of this article"
                 else:
                     item.amount += 1
                     response['message'] = item.article.name + "in your order: " + str(item.amount)
@@ -220,7 +218,6 @@ class ShipmentListAPIView(generics.ListAPIView):
 #     '''
 #     def get(self, request):
 #         # ritorna solo gli articoli disponibili
-#         articles = Article.objects.filter(stock__gte=0)
 
 #         # serializza il queryset in tipi di python
 #         serializer = ArticleListSerializer(articles, many = True)

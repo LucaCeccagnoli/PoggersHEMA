@@ -102,7 +102,7 @@ def  get_logged_user_view(request):
 def change_credentials(request):
     if request.method == "POST":
         #ottieni l'utente
-        errors = {}
+        response = {}
         user = CustomUser.objects.filter(id__exact = request.user.id).get()
         #cambio username
         if 'username' in request.data:
@@ -110,16 +110,18 @@ def change_credentials(request):
             if not CustomUser.objects.filter(username__exact = request.data['username']):
                 user.username = request.data['username']
                 user.save()
+                response["username_success"] = "username updated succesfully"
             else:
-                errors["username"] = "this username already exists"
+                response["username_errors"] = "this username already exists"
         #cambio email
         if 'email' in request.data:
             # se la stessa email non è già presente
             if not CustomUser.objects.filter(email__exact = request.data['email']):
                 user.email = request.data['email']
                 user.save()
+                response["email_success"] = "email address updated succesfully"
             else:
-                errors["email"] = "this email already exists"
+                response["email_errors"] = "this email already exists"
 
         #cambio password
         if 'password_new' in request.data:
@@ -127,11 +129,11 @@ def change_credentials(request):
             if user.check_password(request.data['password_current']):
                 user.set_password(request.data['password_new'])
                 user.save()
+                response["password_success"] = "password updated succesfully"
             else:
-                errors['password'] = 'you current password doesn\' t match'
+                response['password_errors'] = 'you current password doesn\' t match'
 
-        print(errors)
-        return JsonResponse(errors)
+        return JsonResponse(response)
             
 
 @api_view(['POST',])

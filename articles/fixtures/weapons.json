@@ -5,47 +5,12 @@
         "fields": {
             "name": "side sword",
             "material": "synthetic",
-            "description": "",
-            "price": 105.00 ,
-            "stock": 5
-        }
-    },
-
-    {
-        "model": "articles.Article",
-        "pk": 2,
-        "fields": {
-            "name": "side sword - steel",
-            "material": "steel" ,
-            "weight": 1100.00 ,
-            "price": 210.00 ,
-            "stock": 5
-        }
-    },
-
-    {
-        "model": "articles.Article",
-        "pk": 2,
-        "fields": {
-            "name": "longsword - synthetic",
-            "material": "synthetic" ,
-            "weight": 1100.00 ,
-            "price": 210.00 ,
-            "stock": 5
-        }
-    },
-
-    
-    {
-        "model": "articles.Article",
-        "pk": 2,
-        "fields": {
-            "name": "longsword - steel",
-            "material": "steel" ,
-            "weight": 1100.00 ,
-            "price": 210.00 ,
-            "stock": 5
+            "description": "14th century one handed sword",
+            "price": 105.00,
+            "image": ""
         }
     }
 ]
+
+
 

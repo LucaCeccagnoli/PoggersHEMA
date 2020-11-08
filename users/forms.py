@@ -37,4 +37,4 @@ class ArticleForm(forms.Form):
     category = forms.CharField(max_length = 20, label = "category")
     sub_category = forms.CharField(max_length = 20, label = "sub category")
     price = forms.DecimalField(max_digits = 5, decimal_places = 2, required = True)
-    image = forms.CharField(max_length = 50, required = True, label = "image (Path)")
+    image = forms.URLField(max_length = 255, label = "image (URL)")

@@ -47,6 +47,15 @@ class RegistrationSerializer(serializers.ModelSerializer):
         password = self.validated_data['password']
         password2 = self.validated_data['password2']
 
+        #controlla se l'username esiste già
+        if CustomUser.objects.filter(username__exact = username):
+            raise serializers.ValidationError({'username': 'This username is already taken'})
+
+        # controlla se la email esiste già
+        if CustomUser.objects.filter(email__exact = email):
+            print("email già esistente")
+            raise serializers.ValidationError({'email': 'This email already exists'})
+
         # controllo password
         if password != password2:
             raise serializers.ValidationError({'password': 'Passwords must match'})

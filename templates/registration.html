@@ -18,6 +18,7 @@
     <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <div class = "container">
         <h1>Registration</h1>
+        <p id = "errors" class = "text-danger"></p>
         <form id = "reg_form" method = "post">
             {% csrf_token %}    
             {{ form|crispy }}
@@ -25,9 +26,9 @@
         </form>
         <div class = "mt-2">Already have an account?
             <a href="http://127.0.0.1:8000/login/">Login</a>
+            <p><a href="http://127.0.0.1:8000/">Return to the homepage</a></p>
         </div>
         <br>
-        <p id = "errors" class = "text-danger"></p>
     </div>
 </body>
 <script>
@@ -47,12 +48,7 @@
         // username and email are automatically evaluated by the browser
         // validate password
         if(password !== password2){
-            append_message("passwords do not match.")
-        }
-
-        //se ci sono errori nel client
-        if(messages.length > 0){
-            print_messages();
+            $("#errors").html("passwords do not match.");
             return;
         }
 
@@ -63,15 +59,31 @@
                 response = JSON.parse(response);
                 console.log(response);
 
-                if(response['registration'] !== ''){
+                if(response['registration'] !== undefined){
                     //la registrazione ha avuto successo, torna alla homepage
                     window.location.href = "http://127.0.0.1:8000/";
                 }
                 else{
-                    for(var i in response){
-                        append_message(response[i]);
+                    //errore sull'username
+                    if(response['username'] !== undefined){
+                        $("#errors").html(response['username'])
                     }
-                    print_messages();
+                    //errore sulla email
+                    if(response['email'] !== undefined){
+                        $("#errors").html(response['email'])
+                    }
+                    //errore sulla password
+                    if(response['password'] !== undefined){
+                        $("#errors").html(response['password'])
+                    }    
+                }
+            }
+            //errore sull'email
+            if(xhr.status == 400){
+                response = xhr.responseText;
+                response = JSON.parse(response);
+                if(response['email'] !== undefined){
+                    $("#errors").html(response['email'])
                 }
             }
         }
@@ -95,7 +107,7 @@
 
     //stampa messaggi di errore e svuota l'array degli errori
     function print_messages(){
-        document.getElementById("errors").innerHTML = messages;
+        document.getElementById("errors").innerHTML = messages[0];
         console.log(messages)
         messages = [];
     }

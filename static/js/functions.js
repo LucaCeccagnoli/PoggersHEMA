@@ -7,21 +7,19 @@ function get_jQuery(){
 
 // mostra la carta di un articolo
 function addCard(item){
-    var src = "falchion.jpg"//article['image'];
+    var src = item['image'];
     var textNome = item["name"];
     var textMateriale = item["material"];
     var textDesc = item["description"];
     var textPrezzo = item["price"];
-    var textStock = item["stock"];
 
 
     var myCard = $(`<div class=" card card-size"> 
-                        <img class="card-img-top" src='http://127.0.0.1:8000/static/images/${src}'> 
+                        <img class="card-img-top" src='${src}'> 
                         <div class="card-body"> 
                             <h5 class="card-title">${textNome} - ${textMateriale}</h5> 
                             <p class="card-text">${textDesc}</p>
                             <p> Prezzo: ${textPrezzo} €</p>
-                            <small>In Stock: ${textStock}</small> 
                             <button
                                 style = "float: right;"
                                 class="btn btn-primary" 
@@ -35,16 +33,16 @@ function addCard(item){
 
 //mostra la carta di un OrderItem
 function addItemCard(item, article){
-    var src = "falchion.jpg"//article['image'];
+    var src = article['image'];
     var textNome = article['name'];
     var textPrezzo = article['price'];
     var amount = item['amount'];
     var item_id = item['id'];
 
     var myCard = $(`<div class=" card card-size"> 
-                        <img class="card-img-top" src='http://127.0.0.1:8000/static/images/${src}'> 
+                        <img class="card-img-top" src='${src}'> 
                             <div class="card-body"> 
-                                <h5 class="card-title">${textNome}</h5> 
+                                <h5 class="card-title">${textNome} - ${textMateriale}</h5> 
                                 <p class="card-text">
                                     <input class = "form-control-sm" type="number" style = "float:left;" 
                                     value="${amount}" min="1" max="9" step="1"

@@ -76,9 +76,9 @@ $("#username_form").on('submit', (e) =>{
     ));
     xhr.onreadystatechange = function(){
         if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
-            errors = JSON.parse(xhr.responseText)
-            if(errors == {}){
-                $("#username_errors").html(errors['username'])
+            response = JSON.parse(xhr.responseText)
+            if(response['username_errors'] !== undefined ){
+                $("#username_errors").html(response['username_errors'])
             }else{
                 window.location.href = "http://127.0.0.1:8000/account/";
             }
@@ -100,17 +100,17 @@ $("#email_form").on('submit', (e) =>{
     ));
     xhr.onreadystatechange = function(){
         if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
-            errors = JSON.parse(xhr.responseText)
-            if(errors == {}){
-                $("#email_errors").html(errors['email'])
+            response = JSON.parse(xhr.responseText)
+            if(response['email_errors'] !== undefined ){
+                $("#email_errors").html(response['email_errors'])
             }else{
-                window.location.href = "http://127.0.0.1:8000/api/account/";
+                window.location.href = "http://127.0.0.1:8000/account/";
             }
         }
     }
 });
 
-// form cambio email
+// form cambio password
 $("#password_form").on('submit', (e) =>{
     e.preventDefault();
     var xhr = new XMLHttpRequest();
@@ -118,6 +118,7 @@ $("#password_form").on('submit', (e) =>{
     var pw_new = document.getElementById("id_new_password").value;
     var pw_confirm = document.getElementById("id_confirm_password").value;
 
+    //controlla che nuova password e password di conferma combacino
     if(pw_new === pw_confirm){
         xhr.open("POST", "http://127.0.0.1:8000/api/change-credentials/");
         xhr.setRequestHeader("content-type","application/json")
@@ -130,9 +131,9 @@ $("#password_form").on('submit', (e) =>{
         ));
         xhr.onreadystatechange = function(){
             if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
-                errors = JSON.parse(xhr.responseText)
-                if(errors == {}){
-                    $("#password_errors").html(errors['password'])
+                response = JSON.parse(xhr.responseText)
+                if(response['password_errors'] !== undefined ){
+                    $("#password_errors").html(response['password_errors'])
                 }else{
                     window.location.href = "http://127.0.0.1:8000/account/";
                 }

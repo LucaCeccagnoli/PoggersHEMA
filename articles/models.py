@@ -14,7 +14,7 @@ class Article(models.Model):
     category = models.CharField(max_length = 100, default = "none")
     sub_category = models.CharField(max_length = 100, default = "none")
     price = models.DecimalField(max_digits = 10, decimal_places = 2)    
-    image = models.CharField(max_length = 255, default = 'falchion.jpg')
+    image = models.URLField(max_length = 255, default = '')
 
     def __str__(self):
         return self.name + " - " + self.material + " id: " + str(self.pk)

@@ -16,6 +16,7 @@
     <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <div class = "container">
         <h1>Login</h1>
+        <p id = "errors" class = "text-danger"></p>
         <form id = "log_form" action="" method = "post">
             {% csrf_token %}    
             {{ form|crispy }}
@@ -24,9 +25,9 @@
         <br>
         <div class = "mt-2">
             <a href="http://127.0.0.1:8000/registration/">Create a new Account</a>
+            <p><a href="http://127.0.0.1:8000/">Return to the homepage</a></p>
         </div>
         <br>
-        <p id = "errors" class = "text-danger"></p>
     </div>
 </body>
 
