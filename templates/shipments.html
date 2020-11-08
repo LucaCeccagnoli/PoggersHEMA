@@ -3,6 +3,7 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
+{{pk|json_script:"user_pk"}}
 <div class="container border-bottom border-secondary h1 p-1" style="width:60%">
   Elenco Shipments
 </div>
@@ -20,7 +21,14 @@
 <script type="text/javascript">
   var xhr = new XMLHttpRequest();
   var xhrOrder = new XMLHttpRequest();
-  xhr.open("GET", "http://127.0.0.1:8000/api/shipment-list");
+  var user_pk = JSON.parse(document.getElementById('user_pk').textContent);
+  var url = "";
+  if (user_pk){
+    url = "http://127.0.0.1:8000/api/shipment-list/"+user_pk;
+  }else{
+    url = "http://127.0.0.1:8000/api/shipment-list";
+  }
+  xhr.open("GET", url);
   xhr.setRequestHeader('Authorization', 'Token '+ String(get_cookie('token')));
   xhr.send();
   xhr.onreadystatechange = function(){
@@ -37,6 +45,7 @@
       var textShipping_address = item["shipping_address"];
       var textDate = item["date"];
       var textOrder = item["order"];
+      textOrder = textOrder["ref_code"];
 
 
       var myShipment = $(`
