@@ -64,12 +64,11 @@ class ManagerUserListView(View):
         return render (request, "user-list.html")
 
 class ShipmentsListView(View):
-    def get(self, request):
-        return render(request, "shipments.html")
-
-class ShipmentsDetailView(View):
-    def get(self, request):
-        return render(request, "shipments_detail.html")
+    def get(self, request, *args, **kwargs):
+        context={}
+        if 'pk' in kwargs:
+            context['pk'] = kwargs['pk']
+        return render(request, "shipments.html", context)
 
 class ManagerArticleListView(View):
     permission_classes = [permissions.IsAuthenticated, IsManagerUser]
@@ -81,7 +80,7 @@ class ManagerArticleDetailView(View):
         form = ArticleForm()
         context = {
             "form" :  form
-        }	
+        }
         if 'pk' in kwargs:
             context['pk'] = kwargs['pk']
 

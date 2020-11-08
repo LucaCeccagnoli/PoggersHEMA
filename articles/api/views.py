@@ -171,10 +171,6 @@ class ShipmentListAPIView(generics.ListAPIView):
         else:
             return self.list(request, *args, **kwargs)
 
-# dettagli singolo shipment
-class ShipmentDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Shipment.objects.all()
-
 
 # class ArticleDetailAPIView(APIView):
 #     def get_object(self, pk):

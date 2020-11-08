@@ -45,8 +45,8 @@ urlpatterns = [
     path('manager/article-list/', ManagerArticleListView.as_view()),
     path('manager/article-detail/', ManagerArticleDetailView.as_view()),
     path('manager/article-detail/<int:pk>', ManagerArticleDetailView.as_view()),
-    path("shipments/", ShipmentsListView.as_view()),
-    path("shipments_detail/", ShipmentsDetailView.as_view()),
+    path("manager/shipments/", ShipmentsListView.as_view()),
+    path("manager/shipments/<int:pk>/", ShipmentsListView.as_view()),
 
     # api
     path('api/', include("users.api.urls")),

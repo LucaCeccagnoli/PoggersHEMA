@@ -45,7 +45,7 @@
                                 <div class = "col-2 align-middle">${response[i]['email']}</div>
                                 <div class = "col-1 align-middle text-success">${response[i]['is_admin']}</div>
                                 <div class = "col-1"></div>
-                                <button class = "col-1 btn btn-success">Orders</button>
+                                <a class="col-1 btn btn-success" href="http://127.0.0.1:8000/manager/shipments/${response[i]['id']}">Orders</a>
                                 <div class = "col-1"></div>
                             </div>
                         `);
@@ -58,9 +58,9 @@
                                 <div class = "col-2 align-middle">${response[i]['email']}</div>
                                 <div id = "admin_field" class = "col-1 align-middle">${response[i]['is_admin']}</div>
                                 <div class = "col-1"></div>
-                                <button class = "col-1 btn btn-success">Orders</button>
+                                <a class="col-1 btn btn-success" href="http://127.0.0.1:8000/manager/shipments/${response[i]['id']}">Orders</a>
                                 <div class = "col-1"></div>
-                                <button class = "col-1 btn btn-primary" onclick="promoteUser(${response[i]['id']})">Promote</button>    
+                                <button class = "col-1 btn btn-primary" onclick="promoteUser(${response[i]['id']})">Promote</button>
                                 <div class = "col-1"></div>
                                 <button class = "col-1 btn btn-danger" onclick="removeUser(${response[i]['id']})">Delete</button>
                             </div>
