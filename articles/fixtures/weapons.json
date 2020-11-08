@@ -3,9 +3,9 @@
         "model": "articles.Article",
         "pk": 1,
         "fields": {
-            "name": "side sword - synthetic",
+            "name": "side sword",
             "material": "synthetic",
-            "weight": 1020.00 ,
+            "description": "",
             "price": 105.00 ,
             "stock": 5
         }
