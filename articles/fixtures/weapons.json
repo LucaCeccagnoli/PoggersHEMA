@@ -1,16 +1,379 @@
 [
-    {
-        "model": "articles.Article",
-        "pk": 1,
-        "fields": {
-            "name": "side sword",
-            "material": "synthetic",
-            "description": "14th century one handed sword",
-            "price": 105.00,
-            "image": ""
-        }
-    }
+   {
+      "model":"articles.Article",
+      "pk":1,
+      "fields":{
+         "name":"Side Sword",
+         "material":"synthetic",
+         "category":"simulator",
+         "sub_category":"swords1h",
+         "price":105.00,
+         "description":"Replica of an italian Spada da Lato",
+         "image":"https://www.thehemashop.com/media/catalog/product/cache/3/image/650x/20737efe5af96e140e6c181cee6f11d7/s/m/sm22030.jpg"
+      }
+   },
+   {
+      "model":"articles.Article",
+      "pk":2,
+      "fields":{
+         "name":"Viking Sword",
+         "material":"synthetic",
+         "category":"simulator",
+         "sub_category":"swords1h",
+         "price":100.00,
+         "description":"Replica of a short Viking Sword",
+         "image":"https://cdn.shopify.com/s/files/1/1565/1123/products/3316_3_537x537.jpg"
+      }
+   },
+   {
+      "model":"articles.Article",
+      "pk":3,
+      "fields":{
+         "name":"Longsword",
+         "material":"synthetic",
+         "category":"simulator",
+         "sub_category":"swords2h",
+         "price":105.00,
+         "description":"A sword, but elongated",
+         "image":"https://www.thehemashop.com/media/catalog/product/cache/3/image/650x/20737efe5af96e140e6c181cee6f11d7/5/0/501505.jpg"
+      }
+   },
+   {
+      "model":"articles.Article",
+      "pk":4,
+      "fields":{
+         "name":"Spear",
+         "material":"synthetic",
+         "category":"simulator",
+         "sub_category":"polearms",
+         "price":105.00,
+         "description":"It's a classic pointed spear",
+         "image":"https://www.darkknightarmoury.com/wp-content/uploads/2019/10/07-95BOASK.jpg"
+      }
+   },
+   {
+      "model":"articles.Article",
+      "pk":5,
+      "fields":{
+         "name":"Partisan",
+         "material":"synthetic",
+         "category":"simulator",
+         "sub_category":"spear",
+         "price":205.00,
+         "description":"Partisan",
+         "image":"https://mcishop.azureedge.net/mciassets/w_5_0057908_ox-tongue-larp-partisan_550.png"
+      }
+   },
+   {
+      "model":"articles.Article",
+      "pk":6,
+      "fields":{
+         "name":"Dane axe",
+         "material":"synthetic",
+         "category":"simulator",
+         "sub_category":"axe",
+         "price":69.00,
+         "description":"An axe, but danish, wow",
+         "image":"https://images-na.ssl-images-amazon.com/images/I/51lsPLjUKCL._AC_SL1000_.jpg"
+      }
+   },
+   {
+      "model":"articles.Article",
+      "pk":7,
+      "fields":{
+         "name":"Poleaxe",
+         "material":"synthetic",
+         "category":"simulator",
+         "sub_category":"axe",
+         "price":105.00,
+         "description":"Axe, on a really long pole, a spearaxe, if you will",
+         "image":"https://www.faitsdarmes.com/863-large_default/poleaxe-kit.jpg"
+      }
+   },
+   {
+      "model":"articles.Article",
+      "pk":8,
+      "fields":{
+         "name":"Tomahawk",
+         "material":"synthetic",
+         "category":"simulator",
+         "sub_category":"axe",
+         "price":105.00,
+         "description":"These where thrown by the last of mohicans",
+         "image":"https://images-na.ssl-images-amazon.com/images/I/61HqSdfSCFL._AC_SX355_.jpg"
+      }
+   },
+   {
+      "model":"articles.Article",
+      "pk":9,
+      "fields":{
+         "name":"Mask - S",
+         "material":"plastic",
+         "category":"protections",
+         "sub_category":"head",
+         "price":105.00,
+         "description":"Protect your small face, or else",
+         "image":"https://wisepeasants.com/wp-content/uploads/2018/10/gajardoni-kombat-air-mask.jpg"
+      }
+   },
+   {
+      "model":"articles.Article",
+      "pk":10,
+      "fields":{
+         "name":"Mask - M",
+         "material":"plastic",
+         "category":"protections",
+         "sub_category":"head",
+         "price":105.00,
+         "description":"Protect your face, or else",
+         "image":"https://wisepeasants.com/wp-content/uploads/2018/10/gajardoni-kombat-air-mask.jpg"
+      }
+   },
+   {
+      "model":"articles.Article",
+      "pk":11,
+      "fields":{
+         "name":"Mask - L",
+         "material":"plastic",
+         "category":"protections",
+         "sub_category":"head",
+         "price":105.00,
+         "description":"Protect your huge face, or else",
+         "image":"https://wisepeasants.com/wp-content/uploads/2018/10/gajardoni-kombat-air-mask.jpg"
+      }
+   },
+   {
+      "model":"articles.Article",
+      "pk":12,
+      "fields":{
+         "name":"Jacket - S",
+         "material":"leather",
+         "category":"protections",
+         "sub_category":"torso",
+         "price":105.00,
+         "description":"This is very cool, buy it",
+         "image":"https://wisepeasants.com/wp-content/uploads/2018/10/Gajardoni-Diamond-Master-350N-HEMA-Jacket-300x300.jpg"
+      }
+   },
+   {
+      "model":"articles.Article",
+      "pk":13,
+      "fields":{
+         "name":"Jacket - M",
+         "material":"leather",
+         "category":"protections",
+         "sub_category":"torso",
+         "price":105.00,
+         "description":"This is very cool, buy it",
+         "image":"https://wisepeasants.com/wp-content/uploads/2018/10/Gajardoni-Diamond-Master-350N-HEMA-Jacket-300x300.jpg"
+      }
+   },
+   {
+      "model":"articles.Article",
+      "pk":14,
+      "fields":{
+         "name":"Jacket - L",
+         "material":"leather",
+         "category":"protections",
+         "sub_category":"torso",
+         "price":105.00,
+         "description":"This is very cool, buy it",
+         "image":"https://wisepeasants.com/wp-content/uploads/2018/10/Gajardoni-Diamond-Master-350N-HEMA-Jacket-300x300.jpg"
+      }
+   },
+   {
+      "model":"articles.Article",
+      "pk":15,
+      "fields":{
+         "name":"Gloves - S",
+         "material":"Leather",
+         "category":"protections",
+         "sub_category":"hands",
+         "price":105.00,
+         "description":"For people with very small hands, weaklings",
+         "image":"https://www.faitsdarmes.com/227-thickbox_default/leather-fencing-gloves.jpg"
+      }
+   },
+   {
+      "model":"articles.Article",
+      "pk":16,
+      "fields":{
+         "name":"Gloves - M",
+         "material":"Leather",
+         "category":"protections",
+         "sub_category":"hands",
+         "price":105.00,
+         "description":"For hands. That's it",
+         "image":"https://www.faitsdarmes.com/227-thickbox_default/leather-fencing-gloves.jpg"
+      }
+   },
+   {
+      "model":"articles.Article",
+      "pk":17,
+      "fields":{
+         "name":"Gloves - L",
+         "material":"Leather",
+         "category":"protections",
+         "sub_category":"hands",
+         "price":105.00,
+         "description":"Chad.",
+         "image":"https://www.faitsdarmes.com/227-thickbox_default/leather-fencing-gloves.jpg"
+      }
+   },
+   {
+      "model":"articles.Article",
+      "pk":18,
+      "fields":{
+         "name":"Gauntlets - S",
+         "material":"Steel",
+         "category":"protections",
+         "sub_category":"hands",
+         "price":105.00,
+         "description":"Like a lobster",
+         "image":"https://hemasupplies.com/wp-content/uploads/2019/09/Infinity-Gloved-Hourglass-4.jpg"
+      }
+   },
+   {
+      "model":"articles.Article",
+      "pk":19,
+      "fields":{
+         "name":"Gauntlets - M",
+         "material":"Steel",
+         "category":"protections",
+         "sub_category":"hands",
+         "price":105.00,
+         "description":"In some games, these lets you attack twice",
+         "image":"https://hemasupplies.com/wp-content/uploads/2019/09/Infinity-Gloved-Hourglass-4.jpg"
+      }
+   },
+   {
+      "model":"articles.Article",
+      "pk":20,
+      "fields":{
+         "name":"Gauntlets - L",
+         "material":"Steel",
+         "category":"protections",
+         "sub_category":"hands",
+         "price":105.00,
+         "description":"Those games suck",
+         "image":"https://hemasupplies.com/wp-content/uploads/2019/09/Infinity-Gloved-Hourglass-4.jpg"
+      }
+   },
+   {
+      "model":"articles.Article",
+      "pk":21,
+      "fields":{
+         "name":"Pants - S",
+         "material":"synthetic",
+         "category":"protections",
+         "sub_category":"hands",
+         "price":105.00,
+         "description":"Honey, where are my paaaants?",
+         "image":"https://www.blackarmoury.com/996-product_largest/hema-men-s-fightpants-destroyer-modz.jpg"
+      }
+   },
+   {
+      "model":"articles.Article",
+      "pk":22,
+      "fields":{
+         "name":"Pants - M",
+         "material":"synthetic",
+         "category":"protections",
+         "sub_category":"legs",
+         "price":105.00,
+         "description":"For the average dude",
+         "image":"https://www.blackarmoury.com/996-product_largest/hema-men-s-fightpants-destroyer-modz.jpg"
+      }
+   },
+   {
+      "model":"articles.Article",
+      "pk":23,
+      "fields":{
+         "name":"Pants - L",
+         "material":"synthetic",
+         "category":"protections",
+         "sub_category":"legs",
+         "price":105.00,
+         "description":"Big problems require big pants. I think",
+         "image":"https://www.blackarmoury.com/996-product_largest/hema-men-s-fightpants-destroyer-modz.jpg"
+      }
+   },
+   {
+      "model":"articles.Article",
+      "pk":24,
+      "fields":{
+         "name":"Shins - S",
+         "material":"synthetic",
+         "category":"protections",
+         "sub_category":"legs",
+         "price":105.00,
+         "description":"Protects your shins from being stabbed",
+         "image":"https://www.blackarmoury.com/1699-product_largest/wrap-around-knee-shin-guard-dohema.jpg"
+      }
+   },
+   {
+      "model":"articles.Article",
+      "pk":25,
+      "fields":{
+         "name":"Shins - M",
+         "material":"synthetic",
+         "category":"protections",
+         "sub_category":"legs",
+         "price":105.00,
+         "description":"Protects your shins from being kicked",
+         "image":"https://www.blackarmoury.com/1699-product_largest/wrap-around-knee-shin-guard-dohema.jpg"
+      }
+   },
+   {
+      "model":"articles.Article",
+      "pk":26,
+      "fields":{
+         "name":"Shins - L",
+         "material":"synthetic",
+         "category":"protections",
+         "sub_category":"legs",
+         "price":105.00,
+         "description":"Protects your shins from being set on fire... maybe",
+         "image":"https://www.blackarmoury.com/1699-product_largest/wrap-around-knee-shin-guard-dohema.jpg"
+      }
+   },
+   {
+      "model":"articles.Article",
+      "pk":27,
+      "fields":{
+         "name":"Buckler",
+         "material":"Leather",
+         "category":"shields",
+         "sub_category":"buckler",
+         "price":105.00,
+         "description":"A small shield. Make sure to parry your enemies",
+         "image":"https://www.thehemashop.com/media/catalog/product/cache/3/image/650x/20737efe5af96e140e6c181cee6f11d7/c/s/cs-92bkpb-1.jpg"
+      }
+   },
+   {
+      "model":"articles.Article",
+      "pk":28,
+      "fields":{
+         "name":"Targes",
+         "material":"synthetic",
+         "category":"shields",
+         "sub_category":"targes",
+         "price":105.00,
+         "description":"This is a shield, perhaps",
+         "image":"https://www.woodenswords.com/v/vspfiles/photos/CS-TARGE-2T.jpg"
+      }
+   },
+   {
+      "model":"articles.Article",
+      "pk":29,
+      "fields":{
+         "name":"Rotella",
+         "material":"synthetic",
+         "category":"shields",
+         "sub_category":"rotella",
+         "price":105.00,
+         "description":"This is not a Mulino Bianco snack.",
+         "image":"https://www.theknightshop.com/media/catalog/product/cache/1/image/650x/d27a3a48817ed78da9ecab35a9a64794/m/h/mh-a0900b_001_-_wm_1_1.jpg"
+      }
+   }
 ]
-
-
-
