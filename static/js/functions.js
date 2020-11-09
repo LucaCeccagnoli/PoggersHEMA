@@ -36,6 +36,7 @@ function addItemCard(item, article){
     var src = article['image'];
     var textNome = article['name'];
     var textPrezzo = article['price'];
+    var textMateriale = article['material'];
     var amount = item['amount'];
     var item_id = item['id'];
 

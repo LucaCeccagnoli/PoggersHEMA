@@ -68,15 +68,10 @@
                         items.push({"id":response[i]['id'],
                                     "amount":response[i]['amount'],
                                     "price":response[i]['article']['price']});
-                        console.log(items);
                     });
                     //attiva input spinner
                     $("input[type='number']").inputSpinner();
-                    var item_price = get_total_price();
-                    var total_price = item_price + 4.99;
-                    console.log(total_price);
-                    $("#item_price").html("Item Price: "+ String(item_price) + " €");
-                    $("#total_price").html("Total Price: "+ String(total_price)+ " €");
+                    print_price();
                 }
             }
         });
@@ -93,8 +88,6 @@
                 var expiry = document.getElementById("id_cc_expiry").value;
                 var code = document.getElementById("id_cc_code").value;
                 var address = document.getElementById("id_address").value;
-                console.log(address)
-                console.log(number)
                 //trova il carrello dell'utente, imposta l'ordine a "ordinato" e crea uno shipment
                 xhr.open("POST", "http://127.0.0.1:8000/api/confirm-order/"+user_id);
                 xhr.setRequestHeader("content-type","application/json")
@@ -113,22 +106,14 @@
                     }
                     else if(xhr.readyState == XMLHttpRequest.DONE){
                         $("#messages").html("Transaction insuccessful")
+                        print_price();
                     }
                 }
             }
         });
 
-        function get_total_price(){
-            var total_price = 0;
-            $.each(items, function(i){
-                total_price += items[i]["price"] * items[i]["amount"];
-            });
-            return total_price
-        }
-
         //richiesta patch per aggiornare la quantità dell'ordine
         function amountChanged(id, amount){
-            console.log("new amount for ", id, " : ", amount);
             xhr = new XMLHttpRequest();
             xhr.open("PATCH", "http://127.0.0.1:8000/api/order-items/"+id)
             xhr.setRequestHeader("content-type","application/json")
@@ -140,9 +125,32 @@
             ));
             xhr.onreadystatechange = function(){
                 if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
-                    window.location.href = "http://127.0.0.1:8000/shopping-cart"
+                    // ricalcola il costo totale dell'ordine
+                    var item = items.filter(obj => {
+                        if(obj.id == id){
+                            obj.amount = parseInt(amount);
+                        }
+                    })
+                    print_price()
                 }
             }
+        }
+
+        // scrive a schermo il costo dell'ordine
+        function print_price(){
+            var item_price = get_total_price();
+            var total_price = item_price + 4.99;
+            $("#item_price").html("Item Price: "+ String(item_price) + " €");
+            $("#total_price").html("Total Price: "+ String(total_price)+ " €");
+        }
+
+        // calcola il costo totale dell'ordine a partire dagli items salvati
+        function get_total_price(){
+            var total_price = 0;
+            $.each(items, function(i){
+                total_price += items[i]["price"] * items[i]["amount"];
+            });
+            return total_price
         }
 
         //richiesta delete per cancellare l'orderitem

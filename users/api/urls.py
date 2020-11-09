@@ -12,7 +12,5 @@ urlpatterns = [
     path("register-user/", registration_view, name = "register-user"),  # registrazione nuovo utente
 
     path("change-credentials/", change_credentials, name = "change-credentials"),   #cambio credenziali
-
-    path("get-logged-user/", get_logged_user_view, name = "get-logged-user"),   
-    path("user-test/", user_test),  #usata solo per debugging
+    path("get-logged-user/", get_logged_user_view, name = "get-logged-user"),       # ottieni l'utente loggato
 ]

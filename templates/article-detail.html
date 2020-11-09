@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 {% block content %}
 <div class = "container">
-    <h2>Add a new article</h2>
+    <h2 id = "title">Add a new article</h2>
     <form id = "add_form" method = "POST">
         {% csrf_token %}    
         {{ form|crispy }}
@@ -31,6 +31,9 @@
         //mostra pulsante change
         $("#change").show();
 
+        //cambia titolo
+        $("#title").html("Change an existing article")
+
         var xhr = new XMLHttpRequest();
         xhr.open("GET", "http://127.0.0.1:8000/api/article-detail/"+article_pk);
         xhr.setRequestHeader("content-type","application/json")
@@ -52,6 +55,8 @@
     }
     else{
         $("#add").show();
+        //cambia titolo
+        $("#title").html("Add a new article")
     }
 
     //submit del form

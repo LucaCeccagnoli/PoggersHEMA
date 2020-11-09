@@ -56,15 +56,17 @@ class ArticleDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 class ArticleCreateAPIView(generics.CreateAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleDetailSerializer
-    permission_classes = [IsAdminUserOrReadonly]
+    permission_classes = [IsAuthenticated, IsManagerUser]
 
-# lista di tutti gli oggetti negli ordini, solo per amministratori
-# solo per testare
+# lista di tutti gli oggetti negli ordini, solo per superuser
+# get, put/patch, delete
 class OrderItemDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = OrderItem.objects.all()
     serializer_class = OrderItemListSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAdminUser]
 
+# aggiunge un oggetto al carrello dell'utente
+# post
 class AddItemAPIView(APIView):
     def post(self, request):
         # messaggi da riportare al client
@@ -121,14 +123,9 @@ class AddItemAPIView(APIView):
         return JsonResponse(response)
 
 
-# lista di tutti gli ordini effettuati da tutti gli utenti
-# solo admin
-class OrderListAPIView(generics.ListAPIView):
-    queryset = Order.objects.all()
-    permission_classes = [permissions.IsAdminUser]
-    serializer_class = OrderListSerializer
-
 # ottiene un ordine data la chiave primaria del suo proprietario
+# usato per mostrare all'utente gli oggetti nel suo carrello
+# get
 class OrderDetailApiView(generics.GenericAPIView, mixins.ListModelMixin):
     permission_classes = [permissions.IsAuthenticated, isAccountOwner]
     serializer_class = OrderItemListSerializer
@@ -141,6 +138,7 @@ class OrderDetailApiView(generics.GenericAPIView, mixins.ListModelMixin):
         return self.list(request, *args, **kwargs)
 
 # conferma un ordine e genera il relativo shipment
+# post
 class ConfirmOrderAPIView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated, isAccountOwner]
     def post(self, request, *args, **kwargs):
@@ -157,10 +155,11 @@ class ConfirmOrderAPIView(generics.GenericAPIView):
         return JsonResponse(messages)
 
 # ottieni lista shipment totali o per singolo utente
+# get
 class ShipmentListAPIView(generics.ListAPIView):
     serializer_class = ShipmentsListSerializer
     queryset = Shipment.objects.all()
-    permission_classes = []
+    permission_classes = [permissions.IsAuthenticated, IsManagerUser]
 
     def get(self, request, *args, **kwargs):
         if 'pk' in kwargs:

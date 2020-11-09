@@ -6,7 +6,6 @@
 <h1 class = "container p-2 border-bottom border-secondary">User Management Panel</h1>
 <div id = "user_list" class= "container">
     <div class = "row border-bottom border-secondary">
-        <div class = "col-1 h3">ID</div>
         <div class = "col-2 h3" >Username</div>
         <div class = "col-2 h3">Email</div>
         <div class = "col-1 h3">Manager</div>
@@ -40,7 +39,6 @@
                         if(response[i]['is_admin']){
                             $("#user_list").append(`
                             <div class = "row p-2 border-bottom border-secondary">
-                                <div class = "col-1 h5 align-middle">${response[i]['id']}</div>
                                 <div class = "col-2 align-middle">${response[i]['username']}</div>
                                 <div class = "col-2 align-middle">${response[i]['email']}</div>
                                 <div class = "col-1 align-middle text-success">${response[i]['is_admin']}</div>
@@ -53,7 +51,6 @@
                         else{
                             $("#user_list").append(`
                             <div class = "row p-2 border-bottom border-secondary">
-                                <div class = "col-1 h5 align-middle">${response[i]['id']}</div>
                                 <div class = "col-2 align-middle">${response[i]['username']}</div>
                                 <div class = "col-2 align-middle">${response[i]['email']}</div>
                                 <div id = "admin_field" class = "col-1 align-middle">${response[i]['is_admin']}</div>

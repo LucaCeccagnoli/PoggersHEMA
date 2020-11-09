@@ -17,10 +17,10 @@ import requests, json
 from django.http import HttpResponseRedirect, JsonResponse
 from django.views import View
 from django.shortcuts import render
-from users.forms import LoginForm, CustomUserForm
+from core.forms import LoginForm, CustomUserForm
 
-# mostra dati utente
-# solo per l'utente proprietario
+# mostra dati utente, solo per l'utente proprietario
+# get
 class CurrentUserAPIView(APIView):
     permission_classes = [  permissions.IsAuthenticatedOrReadOnly,
                             isAccountOwner, 
@@ -30,11 +30,11 @@ class CurrentUserAPIView(APIView):
         serializer = UserDisplaySerializer(request.user)
         return Response(serializer.data)    
 
-# ottieni e modifica dati di un utente
-# solo per manager/amministratori
+# per promuovere/cancellare un utente
+# get, patch, delete
 class UserDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = CustomUser.objects.all()
-    permission_classes = [permissions.IsAuthenticated ,permissions.IsAdminUser]
+    permission_classes = [permissions.IsAuthenticated ,IsManagerUser]
     serializer_class = UserDisplaySerializer
 
     def get(self, request, *args, **kwargs):
@@ -48,13 +48,13 @@ class UserDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 
 
 # lista di tutti gli utenti
-# solo admin
+# get
 class UserListAPIView(generics.ListAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = UserListSerializer
-    permission_classes = [IsManagerUser]
+    permission_classes = [permissions.IsAuthenticated, IsManagerUser]
 
-
+# registrazione di un nuovo utente
 @api_view(['POST',])
 def registration_view(request):
     print(request.data)
@@ -76,6 +76,7 @@ def registration_view(request):
 
     return JsonResponse(context)
 
+# ottiene informazioni sull'utente loggato
 @permission_classes([IsAuthenticated])
 def  get_logged_user_view(request):
     if request.method == 'GET':
@@ -97,6 +98,7 @@ def  get_logged_user_view(request):
         
         return JsonResponse(message)
 
+# cambio delle credenziali da parte di un utente
 @api_view(['POST',])
 @permission_classes([IsAuthenticated])
 def change_credentials(request):
@@ -135,15 +137,6 @@ def change_credentials(request):
 
         return JsonResponse(response)
             
-
-@api_view(['POST',])
-def user_test(request):
-    if request.method == "POST":
-        token =  Token.objects.get(key = request.data["token"])
-        user = CustomUser.objects.get(id = token.user.id)
-        print(user.id)
-        return JsonResponse({ "user" : user})
-
 '''
 @api_view(['POST',])
 def login_view(request):
