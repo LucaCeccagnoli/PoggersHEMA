@@ -34,7 +34,7 @@ class CurrentUserAPIView(APIView):
 # get, patch, delete
 class UserDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = CustomUser.objects.all()
-    permission_classes = [permissions.IsAuthenticated ,IsManagerUser]
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = UserDisplaySerializer
 
     def get(self, request, *args, **kwargs):

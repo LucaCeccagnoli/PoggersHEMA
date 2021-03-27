@@ -6,4 +6,4 @@ class isAccountOwner(permissions.BasePermission):
 
 class IsManagerUser(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
-        return obj.is_admin == request.user.is_admin
+        return request.user.is_admin
