@@ -49,7 +49,7 @@ class ArticleListAPIView(generics.GenericAPIView, mixins.ListModelMixin, mixins.
 class ArticleDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleDetailSerializer
-    permission_classes = [IsManagerUser, IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
 # creazione di un nuovo articolo
 # post

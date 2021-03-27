@@ -63,7 +63,8 @@ function get_article_detail(key, callback){
     var xhr = new XMLHttpRequest();
 
     xhr.open("GET", "http://127.0.0.1:8000/api/article-detail/" + key);
-    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('content-Type', 'application/json');
+    xhr.setRequestHeader('Authorization', 'Token '+get_cookie('token'));
     xhr.send();
 
     xhr.onreadystatechange = function(){
