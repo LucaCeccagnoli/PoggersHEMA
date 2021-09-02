@@ -10,4 +10,8 @@ Frontend made with Bootstrap and jQuery.
 * Admins can view a list of the current users users, promote or delete their accounts.
 * Backend communication through a REST-ful API.
 
+## Usage
+move to the root of the project folder and run:
+  python manage.py runserver
+
 ![Screenshot of the application](/static/images/screenshot.JPG)
