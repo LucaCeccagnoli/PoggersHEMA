@@ -15,5 +15,6 @@ move to the root of the project folder and run:
 ```
   python manage.py runserver
 ```
+and navigate to http://127.0.0.1:8000/
 
 ![Screenshot of the application](/static/images/screenshot.JPG)
