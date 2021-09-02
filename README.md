@@ -12,6 +12,8 @@ Frontend made with Bootstrap and jQuery.
 
 ## Usage
 move to the root of the project folder and run:
+```
   python manage.py runserver
+```
 
 ![Screenshot of the application](/static/images/screenshot.JPG)
