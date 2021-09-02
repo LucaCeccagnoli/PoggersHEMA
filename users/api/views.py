@@ -80,7 +80,6 @@ def registration_view(request):
 @permission_classes([IsAuthenticated])
 def  get_logged_user_view(request):
     if request.method == 'GET':
-        print(request.user)
         message = {}
         if request.user.is_authenticated:
             message["user"] = request.user.username

@@ -30,12 +30,11 @@ class ArticleListAPIView(generics.GenericAPIView, mixins.ListModelMixin, mixins.
         if 'category' in kwargs : category = str(kwargs['category'])
         if 'sub_category' in kwargs : sub_category = str(kwargs['sub_category'])
 
-        print(category, type(category))
+        print("ArticleListAPIView: " ,category, type(category))
 
         self.queryset = Article.objects.all()
         if category is not None:
             self.queryset = self.queryset.filter(category__exact = category)
-            print(self.queryset)
         if sub_category is not None:
             self.queryset = self.queryset.filter(sub_category__exact = sub_category)
 
@@ -63,7 +62,7 @@ class ArticleCreateAPIView(generics.CreateAPIView):
 class OrderItemDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = OrderItem.objects.all()
     serializer_class = OrderItemListSerializer
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAuthenticated]
 
 # aggiunge un oggetto al carrello dell'utente
 # post

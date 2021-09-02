@@ -9,7 +9,6 @@
         }
 
       </style>
-    <script src = "http://127.0.0.1:8000/static/bootstrap-input-spinner/src/input-spinner.js"></script>
     <div class = "row container">
         <h2 class = "col-sm" id = "title">Your Shopping Cart</h2>
         <p class = "col-sm text-danger" id = "messages"></p>
@@ -63,14 +62,16 @@
                 // carica carte con oggetti del carrello
                 if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
                     response = JSON.parse(xhr.responseText);
+
                     $.each(response, function(i){
                         addItemCard(response[i], response[i]['article']);
                         items.push({"id":response[i]['id'],
                                     "amount":response[i]['amount'],
                                     "price":response[i]['article']['price']});
                     });
+
                     //attiva input spinner
-                    $("input[type='number']").inputSpinner();
+                    // $("input[type='number']").inputSpinner();
                     print_price();
                 }
             }

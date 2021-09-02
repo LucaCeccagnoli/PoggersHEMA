@@ -6,7 +6,7 @@
          "name":"Side Sword",
          "material":"synthetic",
          "category":"simulator",
-         "sub_category":"swords1h",
+         "sub_category":"sword1h",
          "price":105.00,
          "description":"Replica of an italian Spada da Lato",
          "image":"https://www.thehemashop.com/media/catalog/product/cache/3/image/650x/20737efe5af96e140e6c181cee6f11d7/s/m/sm22030.jpg"
@@ -19,7 +19,7 @@
          "name":"Viking Sword",
          "material":"synthetic",
          "category":"simulator",
-         "sub_category":"swords1h",
+         "sub_category":"sword1h",
          "price":100.00,
          "description":"Replica of a short Viking Sword",
          "image":"https://cdn.shopify.com/s/files/1/1565/1123/products/3316_3_537x537.jpg"
@@ -32,7 +32,7 @@
          "name":"Longsword",
          "material":"synthetic",
          "category":"simulator",
-         "sub_category":"swords2h",
+         "sub_category":"sword2h",
          "price":105.00,
          "description":"A sword, but elongated",
          "image":"https://www.thehemashop.com/media/catalog/product/cache/3/image/650x/20737efe5af96e140e6c181cee6f11d7/5/0/501505.jpg"
@@ -343,7 +343,7 @@
       "fields":{
          "name":"Buckler",
          "material":"Leather",
-         "category":"shields",
+         "category":"shield",
          "sub_category":"buckler",
          "price":105.00,
          "description":"A small shield. Make sure to parry your enemies",
@@ -356,8 +356,8 @@
       "fields":{
          "name":"Targes",
          "material":"synthetic",
-         "category":"shields",
-         "sub_category":"targes",
+         "category":"shield",
+         "sub_category":"targe",
          "price":105.00,
          "description":"This is a shield, perhaps",
          "image":"https://www.woodenswords.com/v/vspfiles/photos/CS-TARGE-2T.jpg"
@@ -369,7 +369,7 @@
       "fields":{
          "name":"Rotella",
          "material":"synthetic",
-         "category":"shields",
+         "category":"shield",
          "sub_category":"rotella",
          "price":105.00,
          "description":"This is not a Mulino Bianco snack.",
